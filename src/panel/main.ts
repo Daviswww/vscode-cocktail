@@ -327,7 +327,6 @@ function notifyExtensionReady(): void {
 function setupPanel(): void {
   initCanvas("backgroundEffectCanvas", true);
   initForegroundCanvas();
-  initClock();
   notifyExtensionReady();
   window.addEventListener("keydown", handleKeyDown);
   window.addEventListener("resize", () => {
