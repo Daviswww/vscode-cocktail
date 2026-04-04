@@ -25,7 +25,11 @@
       },
       {
         "command": "vscode-cocktail.toggleLanguage",
-        "title": "Toggle Language"
+        "title": "Toggle Language",
+        "icon": {
+          "dark": "media/icon/dark-triangle-outline.svg",
+          "light": "media/icon/light-triangle-outline.svg"
+        }
       }
     ],
     "views": {
