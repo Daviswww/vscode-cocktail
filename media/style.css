@@ -10,6 +10,26 @@ body {
   position: relative;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial;
   overflow: hidden;
+  background: #081b3a;
+}
+
+#cocktailScene {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.scene-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 4%;
+  box-sizing: border-box;
+  gap: 24px;
+  z-index: 4;
 }
 
 #cocktailCanvasContainer {
@@ -25,23 +45,145 @@ body {
   height: 100%;
 }
 
+.drink-panel {
+  position: relative;
+  width: 50%;
+  max-width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.drink-wrapper {
+  position: relative;
+  width: 50px;
+  margin: 0 auto 10px;
+  z-index: 4;
+}
+
+.drink-glow {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(173, 255, 255, 0.85) 0%,
+    rgba(0, 212, 255, 0.15) 40%,
+    rgba(0, 0, 0, 0) 70%
+  );
+  filter: blur(12px);
+  animation: drinkGlow 2.4s ease-in-out infinite;
+}
+
+.drink {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.drink-name {
+  margin-top: 12px;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+}
+
+.recipe-panel {
+  position: relative;
+  width: 50%;
+  max-width: 260px;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+  color: #ffffff;
+  z-index: 4;
+}
+
+.recipe-header {
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #9cd5ff;
+  margin-bottom: 10px;
+}
+
+.recipe-text {
+  white-space: pre-wrap;
+  line-height: 1.4;
+  font-size: 12px;
+  color: #e8f6ff;
+}
+
+.bar-counter {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 26%;
+  background: linear-gradient(
+    180deg,
+    rgba(26, 40, 72, 0.25),
+    #0a162f 35%,
+    #1e2b53 75%,
+    #0f1a3b 100%
+  );
+  box-shadow: inset 0 8px 30px rgba(0, 0, 0, 0.35);
+  z-index: 3;
+}
+
+.bar-counter::after {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 18px;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  box-shadow: 0 0 24px rgba(255, 255, 255, 0.05);
+}
+
+@keyframes drinkGlow {
+  0%,
+  100% {
+    transform: translateX(-50%) scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateX(-50%) scale(1.15);
+    opacity: 0.95;
+  }
+}
+
 .clock {
   position: absolute;
-  bottom: 40px;
-  right: 16px;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 700;
   color: #ffffff;
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
-  z-index: 2;
+  text-shadow: 0 0 12px rgba(0, 0, 0, 0.8);
+  z-index: 3;
 }
 
 .date {
   position: absolute;
-  bottom: 16px;
-  right: 16px;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
   color: #ffffff;
   font-size: 12px;
   text-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
-  z-index: 2;
+  z-index: 3;
 }

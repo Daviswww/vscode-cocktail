@@ -1,5 +1,6 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
+import * as fs from "fs";
 import * as vscode from "vscode";
 
 class ClockViewProvider implements vscode.WebviewViewProvider {
@@ -48,6 +49,15 @@ class ClockViewProvider implements vscode.WebviewViewProvider {
     const styleUri = webview.asWebviewUri(
       vscode.Uri.joinPath(this._extensionUri, "media", "style.css"),
     );
+    const localeUri = vscode.Uri.joinPath(this._extensionUri, "en-US.json");
+    const localeRaw = fs.readFileSync(localeUri.fsPath, "utf8");
+    const locale = JSON.parse(localeRaw) as any;
+    const drink = locale?.drinks?.["1"] ?? {};
+    const drinkName = drink.name ?? "Cocktail";
+    const drinkRecipe = (drink.recipe ?? "").replace(/\n/g, "<br />");
+    const drinkUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(this._extensionUri, "media", "drinks", "1.png"),
+    );
 
     return `<!doctype html>
       <html lang="en">
@@ -57,12 +67,27 @@ class ClockViewProvider implements vscode.WebviewViewProvider {
         <link rel="stylesheet" href="${styleUri}" />
       </head>
       <body>
-        <div id="cocktailCanvasContainer">
+        <div id="cocktailScene">
+          <div id="cocktailCanvasContainer">
             <canvas id="backgroundEffectCanvas"></canvas>
+          </div>
+          <div class="bar-counter"></div>
+          <div class="scene-content">
+            <div class="drink-panel">
+              <div class="drink-wrapper">
+                <div class="drink-glow"></div>
+                <img class="drink" src="${drinkUri}" alt="${drinkName}" />
+              </div>
+              <div class="drink-name">${drinkName}</div>
+            </div>
+            <div class="recipe-panel">
+              <div class="recipe-header">Recipe</div>
+              <div class="recipe-text">${drinkRecipe}</div>
+            </div>
+          </div>
+          <div class="clock" id="time">--:--:--</div>
+          <div class="date" id="date"></div>
         </div>
-        <div class="clock" id="time">--:--:--</div>
-        <div class="date" id="date"></div>
-        <div id="background"></div>
         <script src="${scriptUri}"></script>
       </body>
       </html>`;
