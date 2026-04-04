@@ -3,7 +3,7 @@
 import * as vscode from "vscode";
 import { listFilesFiltered, readJsonFile } from "./common/fileReader";
 
-export class ClockViewProvider implements vscode.WebviewViewProvider {
+export class CocktailViewProvider implements vscode.WebviewViewProvider {
   public static readonly viewType = "vscode-cocktail.cocktail";
   constructor(private readonly _extensionUri: vscode.Uri) {}
   private _webviewView?: vscode.WebviewView;
@@ -205,13 +205,16 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   // Register the clock view provider in Explorer
-  const clockProvider = new ClockViewProvider(context.extensionUri);
+  const clockProvider = new CocktailViewProvider(context.extensionUri);
   const registration = vscode.window.registerWebviewViewProvider(
-    ClockViewProvider.viewType,
+    CocktailViewProvider.viewType,
     clockProvider,
   );
   context.subscriptions.push(registration);
-  console.log("ClockViewProvider registered:", ClockViewProvider.viewType);
+  console.log(
+    "CocktailViewProvider registered:",
+    CocktailViewProvider.viewType,
+  );
   context.subscriptions.push(
     vscode.commands.registerCommand("vscode-cocktail.showMethodMessage", () => {
       try {
