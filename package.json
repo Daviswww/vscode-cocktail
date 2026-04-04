@@ -26,6 +26,10 @@
       {
         "command": "vscode-cocktail.tickClock",
         "title": "Send Tick to Cocktail Clock"
+      },
+      {
+        "command": "vscode-cocktail.randomDrink",
+        "title": "Randomize Cocktail"
       }
     ],
     "views": {
@@ -34,6 +38,15 @@
           "type": "webview",
           "id": "vscode-cocktail.clockView",
           "name": "Cocktail Clock"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "vscode-cocktail.randomDrink",
+          "when": "view == vscode-cocktail.clockView",
+          "group": "navigation"
         }
       ]
     }

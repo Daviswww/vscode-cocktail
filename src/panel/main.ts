@@ -28,9 +28,10 @@ function initCanvas(name: string): HTMLCanvasElement | null {
   ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
   // draw a vertical gradient background
   const grad = ctx.createLinearGradient(0, 0, 0, height);
-  grad.addColorStop(0, "#0b3d91");
-  grad.addColorStop(0.5, "#3b82f6");
-  grad.addColorStop(1, "#00d4ff");
+  grad.addColorStop(0, "#1f1f38");
+  grad.addColorStop(0.4, "#4b2f3c");
+  grad.addColorStop(0.7, "#8c4a27");
+  grad.addColorStop(1, "#e09d3c");
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, width, height);
 
@@ -66,22 +67,96 @@ export function initClock(): void {
   update();
 }
 
-export function cocktailPanelApp(
-  basePetUri: string,
-  throwBallWithMouse: boolean,
-  disableEffects: boolean,
-) {
+interface DrinkItem {
+  name: string;
+  recipe: string;
+}
+
+type PanelMessage =
+  | {
+      command: "init-drinks";
+      drinks: Record<string, DrinkItem>;
+      drinkBaseUri: string;
+    }
+  | { command: "random-drink" };
+
+let drinks: Record<string, DrinkItem> = {};
+let drinkBaseUri = "";
+
+function getElement<T extends HTMLElement>(id: string): T | null {
+  return document.getElementById(id) as T | null;
+}
+
+function updateDrinkDisplay(id: string): void {
+  const drink = drinks[id];
+  const nameEl = getElement<HTMLDivElement>("drinkName");
+  const recipeEl = getElement<HTMLDivElement>("drinkRecipe");
+  const drinkImg = document.querySelector<HTMLImageElement>(".drink");
+
+  if (!drink) {
+    return;
+  }
+
+  if (drinkImg) {
+    drinkImg.src = `${drinkBaseUri}/${id}.png`;
+    drinkImg.alt = drink.name;
+  }
+
+  if (nameEl) {
+    nameEl.textContent = drink.name;
+  }
+
+  if (recipeEl) {
+    recipeEl.innerHTML = drink.recipe.replace(/\n/g, "<br />");
+  }
+}
+
+function setRandomDrink(): void {
+  const keys = Object.keys(drinks);
+  if (keys.length === 0) {
+    return;
+  }
+  const id = keys[Math.floor(Math.random() * keys.length)];
+  updateDrinkDisplay(id);
+}
+
+function handlePanelMessage(message: PanelMessage): void {
+  if (message.command === "init-drinks") {
+    drinks = message.drinks;
+    drinkBaseUri = message.drinkBaseUri;
+    setRandomDrink();
+    return;
+  }
+
+  if (message.command === "random-drink") {
+    setRandomDrink();
+  }
+}
+
+window.addEventListener("message", (event) => {
+  handlePanelMessage(event.data as PanelMessage);
+});
+
+export function cocktailPanelApp() {
   initCanvas("backgroundEffectCanvas");
   initClock();
-  window.addEventListener("resize", function () {
+
+  window.addEventListener("resize", () => {
     initCanvas("backgroundEffectCanvas");
   });
+}
+
+const vscode = (window as any).acquireVsCodeApi();
+
+function notifyExtensionReady(): void {
+  vscode.postMessage({ command: "ready" });
 }
 
 function setupPanel(): void {
   initCanvas("backgroundEffectCanvas");
   initClock();
-  window.addEventListener("resize", function () {
+  notifyExtensionReady();
+  window.addEventListener("resize", () => {
     initCanvas("backgroundEffectCanvas");
   });
 }

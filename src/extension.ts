@@ -7,6 +7,7 @@ class ClockViewProvider implements vscode.WebviewViewProvider {
   public static readonly viewType = "vscode-cocktail.clockView";
   constructor(private readonly _extensionUri: vscode.Uri) {}
   private _webviewView?: vscode.WebviewView;
+  private _messageDisposable?: vscode.Disposable;
 
   public resolveWebviewView(
     webviewView: vscode.WebviewView,
@@ -19,11 +20,25 @@ class ClockViewProvider implements vscode.WebviewViewProvider {
       enableScripts: true,
     };
     webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
+    this._messageDisposable?.dispose();
+    this._messageDisposable = webviewView.webview.onDidReceiveMessage(
+      (message) => {
+        if (message?.command === "ready") {
+          this.postDrinkData(webviewView.webview);
+        }
+      },
+    );
   }
 
   public tick() {
     if (this._webviewView) {
       void this.getWebview().postMessage({ command: "tick" });
+    }
+  }
+
+  public randomizeDrink() {
+    if (this._webviewView) {
+      void this.getWebview().postMessage({ command: "random-drink" });
     }
   }
 
@@ -39,6 +54,31 @@ class ClockViewProvider implements vscode.WebviewViewProvider {
     }
   }
 
+  private postDrinkData(webview: vscode.Webview) {
+    const localeUri = vscode.Uri.joinPath(this._extensionUri, "en-US.json");
+    const localeRaw = fs.readFileSync(localeUri.fsPath, "utf8");
+    const locale = JSON.parse(localeRaw) as any;
+    const allDrinks = locale?.drinks ?? {};
+
+    const drinksFolder = vscode.Uri.joinPath(
+      this._extensionUri,
+      "media",
+      "drinks",
+    );
+    const imageFiles = fs
+      .readdirSync(drinksFolder.fsPath)
+      .filter((name) => name.toLowerCase().endsWith(".png"));
+    const availableDrinkIds = new Set(
+      imageFiles.map((name) => name.replace(/\.png$/i, "")),
+    );
+    const drinks = Object.fromEntries(
+      Object.entries(allDrinks).filter(([id]) => availableDrinkIds.has(id)),
+    );
+
+    const drinkBaseUri = webview.asWebviewUri(drinksFolder).toString();
+    void webview.postMessage({ command: "init-drinks", drinks, drinkBaseUri });
+  }
+
   private _getHtmlForWebview(webview: vscode.Webview): string {
     const scriptPathOnDisk = vscode.Uri.joinPath(
       this._extensionUri,
@@ -49,12 +89,6 @@ class ClockViewProvider implements vscode.WebviewViewProvider {
     const styleUri = webview.asWebviewUri(
       vscode.Uri.joinPath(this._extensionUri, "media", "style.css"),
     );
-    const localeUri = vscode.Uri.joinPath(this._extensionUri, "en-US.json");
-    const localeRaw = fs.readFileSync(localeUri.fsPath, "utf8");
-    const locale = JSON.parse(localeRaw) as any;
-    const drink = locale?.drinks?.["1"] ?? {};
-    const drinkName = drink.name ?? "Cocktail";
-    const drinkRecipe = (drink.recipe ?? "").replace(/\n/g, "<br />");
     const drinkUri = webview.asWebviewUri(
       vscode.Uri.joinPath(this._extensionUri, "media", "drinks", "1.png"),
     );
@@ -71,18 +105,17 @@ class ClockViewProvider implements vscode.WebviewViewProvider {
           <div id="cocktailCanvasContainer">
             <canvas id="backgroundEffectCanvas"></canvas>
           </div>
-          <div class="bar-counter"></div>
           <div class="scene-content">
             <div class="drink-panel">
               <div class="drink-wrapper">
                 <div class="drink-glow"></div>
-                <img class="drink" src="${drinkUri}" alt="${drinkName}" />
+                <img class="drink" src="${drinkUri}" alt="Cocktail" />
               </div>
-              <div class="drink-name">${drinkName}</div>
+              <div class="drink-name" id="drinkName">Cocktail</div>
             </div>
             <div class="recipe-panel">
               <div class="recipe-header">Recipe</div>
-              <div class="recipe-text">${drinkRecipe}</div>
+              <div class="recipe-text" id="drinkRecipe">Loading...</div>
             </div>
           </div>
           <div class="clock" id="time">--:--:--</div>
@@ -126,6 +159,16 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.window.showInformationMessage(
           "Tick sent to clock view (if visible).",
         );
+      } catch (err) {
+        vscode.window.showErrorMessage(String(err));
+      }
+    }),
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand("vscode-cocktail.randomDrink", () => {
+      try {
+        clockProvider.randomizeDrink();
       } catch (err) {
         vscode.window.showErrorMessage(String(err));
       }

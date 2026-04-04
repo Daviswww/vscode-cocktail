@@ -10,7 +10,7 @@ body {
   position: relative;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial;
   overflow: hidden;
-  background: #081b3a;
+  background: linear-gradient(180deg, #0d1623 0%, #2f1f44 45%, #4e2c32 100180%);
 }
 
 #cocktailScene {
@@ -54,12 +54,17 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
+  height: 180px;
 }
 
 .drink-wrapper {
   position: relative;
+  flex: 0 0 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 50px;
-  margin: 0 auto 10px;
+  margin: 0 auto;
   z-index: 4;
 }
 
@@ -82,13 +87,20 @@ body {
 }
 
 .drink {
-  width: 100%;
+  max-width: 100%;
+  max-height: 80px;
+  width: auto;
   height: auto;
   display: block;
+  margin: 0 auto;
 }
 
 .drink-name {
-  margin-top: 12px;
+  flex: 0 0 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
   color: #ffffff;
   font-size: 16px;
   font-weight: 700;
@@ -122,35 +134,6 @@ body {
   line-height: 1.4;
   font-size: 12px;
   color: #e8f6ff;
-}
-
-.bar-counter {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 26%;
-  background: linear-gradient(
-    180deg,
-    rgba(26, 40, 72, 0.25),
-    #0a162f 35%,
-    #1e2b53 75%,
-    #0f1a3b 100%
-  );
-  box-shadow: inset 0 8px 30px rgba(0, 0, 0, 0.35);
-  z-index: 3;
-}
-
-.bar-counter::after {
-  content: "";
-  position: absolute;
-  left: 8%;
-  right: 8%;
-  top: 18px;
-  height: 16px;
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: 999px;
-  box-shadow: 0 0 24px rgba(255, 255, 255, 0.05);
 }
 
 @keyframes drinkGlow {
