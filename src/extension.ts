@@ -199,8 +199,6 @@ export class ClockViewProvider implements vscode.WebviewViewProvider {
   }
 }
 
-// <div class="clock" id="time">--:--:--</div>
-// <div class="date" id="date"></div>
 export function activate(context: vscode.ExtensionContext) {
   console.log(
     'Congratulations, your extension "vscode-cocktail" is now active!',
