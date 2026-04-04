@@ -129,6 +129,16 @@ body {
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
   color: #ffffff;
   z-index: 4;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.recipe-panel-change-out {
+  opacity: 0;
+}
+
+.recipe-panel-change-in {
+  opacity: 1;
 }
 
 .recipe-header {

@@ -183,11 +183,12 @@ function updateDrinkDisplay(id: string): void {
 let _drinkAnimating = false;
 function animateDrinkChange(id: string): void {
   const drinkImg = document.querySelector<HTMLImageElement>(".drink");
+  const recipePanel = document.querySelector<HTMLDivElement>(".recipe-panel");
   const nameEl = getElement<HTMLDivElement>("drinkName");
   const recipeEl = getElement<HTMLDivElement>("drinkRecipe");
   const drink = drinks[id];
 
-  if (!drink || !drinkImg) {
+  if (!drink || !drinkImg || !recipePanel) {
     updateDrinkDisplay(id);
     return;
   }
@@ -198,10 +199,13 @@ function animateDrinkChange(id: string): void {
 
   _drinkAnimating = true;
   drinkImg.classList.add("drink-change-out");
+  recipePanel.classList.add("recipe-panel-change-out");
 
   const finishOut = () => {
     drinkImg.removeEventListener("transitionend", finishOut);
+
     drinkImg.classList.remove("drink-change-out");
+    recipePanel.classList.remove("recipe-panel-change-out");
 
     drinkImg.src = `${drinkBaseUri}/${id}.png`;
     drinkImg.alt = drink.name;
@@ -213,11 +217,18 @@ function animateDrinkChange(id: string): void {
     }
 
     drinkImg.classList.add("drink-change-in");
+    recipePanel.classList.add("recipe-panel-change-in");
+
+    const finishIn = () => {
+      drinkImg.removeEventListener("transitionend", finishIn);
+      drinkImg.classList.remove("drink-change-in");
+      recipePanel.classList.remove("recipe-panel-change-in");
+      _drinkAnimating = false;
+    };
+
     requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        drinkImg.classList.remove("drink-change-in");
-        _drinkAnimating = false;
-      });
+      drinkImg.addEventListener("transitionend", finishIn, { once: true });
+      recipePanel.addEventListener("transitionend", finishIn, { once: true });
     });
   };
 
