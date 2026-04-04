@@ -141,30 +141,6 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(registration);
   console.log("ClockViewProvider registered:", ClockViewProvider.viewType);
 
-  // Commands to help testing and revealing the view
-  context.subscriptions.push(
-    vscode.commands.registerCommand("vscode-cocktail.revealClock", async () => {
-      // Ensure Explorer is visible then instruct user to expand the view
-      await vscode.commands.executeCommand("workbench.view.explorer");
-      vscode.window.showInformationMessage(
-        'Explorer shown — expand "Cocktail Clock" view to activate it.',
-      );
-    }),
-  );
-
-  context.subscriptions.push(
-    vscode.commands.registerCommand("vscode-cocktail.tickClock", () => {
-      try {
-        clockProvider.tick();
-        vscode.window.showInformationMessage(
-          "Tick sent to clock view (if visible).",
-        );
-      } catch (err) {
-        vscode.window.showErrorMessage(String(err));
-      }
-    }),
-  );
-
   context.subscriptions.push(
     vscode.commands.registerCommand("vscode-cocktail.randomDrink", () => {
       try {

@@ -16,18 +16,6 @@
   "contributes": {
     "commands": [
       {
-        "command": "vscode-cocktail.helloWorld",
-        "title": "Hello World"
-      },
-      {
-        "command": "vscode-cocktail.revealClock",
-        "title": "Reveal Cocktail Clock"
-      },
-      {
-        "command": "vscode-cocktail.tickClock",
-        "title": "Send Tick to Cocktail Clock"
-      },
-      {
         "command": "vscode-cocktail.randomDrink",
         "title": "Randomize Cocktail"
       }
