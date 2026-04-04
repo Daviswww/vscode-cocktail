@@ -40,9 +40,20 @@ body {
 }
 
 #cocktailCanvasContainer canvas {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
+  pointer-events: none;
+}
+
+#backgroundEffectCanvas {
+  z-index: 1;
+}
+
+#foregroundEffectCanvas {
+  z-index: 2;
 }
 
 .drink-panel {
@@ -63,27 +74,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
+  width: 60px;
   margin: 0 auto;
   z-index: 4;
-}
-
-.drink-glow {
-  position: absolute;
-  left: 50%;
-  bottom: 16px;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(173, 255, 255, 0.85) 0%,
-    rgba(0, 212, 255, 0.15) 40%,
-    rgba(0, 0, 0, 0) 70%
-  );
-  filter: blur(12px);
-  animation: drinkGlow 2.4s ease-in-out infinite;
 }
 
 .drink {
@@ -96,11 +89,10 @@ body {
 }
 
 .drink-name {
-  flex: 0 0 30%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0;
+  margin: 0 0 12px;
   color: #ffffff;
   font-size: 16px;
   font-weight: 700;

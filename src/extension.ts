@@ -4,7 +4,7 @@ import * as fs from "fs";
 import * as vscode from "vscode";
 
 class ClockViewProvider implements vscode.WebviewViewProvider {
-  public static readonly viewType = "vscode-cocktail.clockView";
+  public static readonly viewType = "vscode-cocktail.cocktail";
   constructor(private readonly _extensionUri: vscode.Uri) {}
   private _webviewView?: vscode.WebviewView;
   private _messageDisposable?: vscode.Disposable;
@@ -104,22 +104,20 @@ class ClockViewProvider implements vscode.WebviewViewProvider {
         <div id="cocktailScene">
           <div id="cocktailCanvasContainer">
             <canvas id="backgroundEffectCanvas"></canvas>
+            <canvas id="foregroundEffectCanvas"></canvas>
           </div>
           <div class="scene-content">
             <div class="drink-panel">
               <div class="drink-wrapper">
-                <div class="drink-glow"></div>
                 <img class="drink" src="${drinkUri}" alt="Cocktail" />
               </div>
-              <div class="drink-name" id="drinkName">Cocktail</div>
             </div>
             <div class="recipe-panel">
-              <div class="recipe-header">Recipe</div>
+              <div class="drink-name" id="drinkName">Cocktail</div>
               <div class="recipe-text" id="drinkRecipe">Loading...</div>
             </div>
           </div>
-          <div class="clock" id="time">--:--:--</div>
-          <div class="date" id="date"></div>
+
         </div>
         <script src="${scriptUri}"></script>
       </body>
@@ -127,6 +125,8 @@ class ClockViewProvider implements vscode.WebviewViewProvider {
   }
 }
 
+// <div class="clock" id="time">--:--:--</div>
+// <div class="date" id="date"></div>
 export function activate(context: vscode.ExtensionContext) {
   console.log(
     'Congratulations, your extension "vscode-cocktail" is now active!',

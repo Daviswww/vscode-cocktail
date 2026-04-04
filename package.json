@@ -10,7 +10,7 @@
     "Other"
   ],
   "activationEvents": [
-    "onView:vscode-cocktail.clockView"
+    "onView:vscode-cocktail.cocktail"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -36,8 +36,8 @@
       "explorer": [
         {
           "type": "webview",
-          "id": "vscode-cocktail.clockView",
-          "name": "Cocktail Clock"
+          "id": "vscode-cocktail.cocktail",
+          "name": "Cocktail"
         }
       ]
     },
@@ -45,7 +45,7 @@
       "view/title": [
         {
           "command": "vscode-cocktail.randomDrink",
-          "when": "view == vscode-cocktail.clockView",
+          "when": "view == vscode-cocktail.cocktail",
           "group": "navigation"
         }
       ]
