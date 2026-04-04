@@ -139,6 +139,7 @@ export function initClock(): void {
 interface DrinkItem {
   name: string;
   recipe: string;
+  description: string;
 }
 
 type PanelMessage =
@@ -152,6 +153,7 @@ type PanelMessage =
 
 let drinks: Record<string, DrinkItem> = {};
 let drinkBaseUri = "";
+let _currentDrinkId: string | null = null;
 
 function getElement<T extends HTMLElement>(id: string): T | null {
   return document.getElementById(id) as T | null;
@@ -166,6 +168,9 @@ function updateDrinkDisplay(id: string): void {
   if (!drink) {
     return;
   }
+
+  _currentDrinkId = id;
+  postCurrentDrinkDescription(drink);
 
   if (drinkImg) {
     drinkImg.src = `${drinkBaseUri}/${id}.png`;
@@ -193,6 +198,9 @@ function animateDrinkChange(id: string): void {
     updateDrinkDisplay(id);
     return;
   }
+
+  _currentDrinkId = id;
+  postCurrentDrinkDescription(drink);
 
   if (_drinkAnimating) {
     return;
@@ -262,6 +270,18 @@ function handlePanelMessage(message: PanelMessage): void {
     incrementKeyPress();
     return;
   }
+}
+
+function postCurrentDrinkDescription(drink: DrinkItem): void {
+  if (!vscode || typeof vscode.postMessage !== "function") {
+    return;
+  }
+
+  vscode.postMessage({
+    command: "current-drink",
+    name: drink.name,
+    description: drink.description,
+  });
 }
 
 function incrementKeyPress(): void {

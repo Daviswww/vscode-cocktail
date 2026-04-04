@@ -9,6 +9,8 @@ export class ClockViewProvider implements vscode.WebviewViewProvider {
   private _webviewView?: vscode.WebviewView;
   private _messageDisposable?: vscode.Disposable;
   private _languageOverride?: string;
+  private _currentDrinkDescription?: string;
+  private _currentDrinkName?: string;
 
   public resolveWebviewView(
     webviewView: vscode.WebviewView,
@@ -26,6 +28,12 @@ export class ClockViewProvider implements vscode.WebviewViewProvider {
       (message) => {
         if (message?.command === "ready") {
           this.postDrinkData(webviewView.webview);
+          return;
+        }
+        if (message?.command === "current-drink") {
+          this._currentDrinkName = message.name;
+          this._currentDrinkDescription = message.description;
+          return;
         }
       },
     );
@@ -231,6 +239,23 @@ export function activate(context: vscode.ExtensionContext) {
         clockProvider.toggleLanguage();
       } catch (err) {
         vscode.window.showErrorMessage(String(err));
+      }
+    }),
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand("vscode-cocktail.showFlavorMessage", () => {
+      if (clockProvider._currentDrinkDescription) {
+        const prefix = clockProvider._currentDrinkName
+          ? `${clockProvider._currentDrinkName}: `
+          : "";
+        vscode.window.showInformationMessage(
+          `${prefix}${clockProvider._currentDrinkDescription}`,
+        );
+      } else {
+        vscode.window.showInformationMessage(
+          "No cocktail selected yet. Open the Cocktail view and choose a drink first.",
+        );
       }
     }),
   );

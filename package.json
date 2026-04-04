@@ -16,19 +16,27 @@
   "contributes": {
     "commands": [
       {
-        "command": "vscode-cocktail.randomDrink",
-        "title": "Randomize Cocktail",
-        "icon": {
-          "dark": "media/icon/dark-circle-outline.svg",
-          "light": "media/icon/light-circle-outline.svg"
-        }
-      },
-      {
         "command": "vscode-cocktail.toggleLanguage",
         "title": "Toggle Language",
         "icon": {
           "dark": "media/icon/dark-triangle-outline.svg",
           "light": "media/icon/light-triangle-outline.svg"
+        }
+      },
+      {
+        "command": "vscode-cocktail.randomDrink",
+        "title": "Randomize Cocktail",
+        "icon": {
+          "dark": "media/icon/dark-rect-outline.svg",
+          "light": "media/icon/light-rect-outline.svg"
+        }
+      },
+      {
+        "command": "vscode-cocktail.showFlavorMessage",
+        "title": "Show Flavor Message",
+        "icon": {
+          "dark": "media/icon/dark-circle-outline.svg",
+          "light": "media/icon/light-circle-outline.svg"
         }
       }
     ],
@@ -51,6 +59,11 @@
         },
         {
           "command": "vscode-cocktail.toggleLanguage",
+          "when": "view == vscode-cocktail.cocktail",
+          "group": "navigation"
+        },
+        {
+          "command": "vscode-cocktail.showFlavorMessage",
           "when": "view == vscode-cocktail.cocktail",
           "group": "navigation"
         }
