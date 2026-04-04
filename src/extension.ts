@@ -54,8 +54,43 @@ class ClockViewProvider implements vscode.WebviewViewProvider {
     }
   }
 
+  private getLocaleUri(): vscode.Uri {
+    const localeFolder = vscode.Uri.joinPath(this._extensionUri, "l10n");
+    const localeFiles = listFilesFiltered(localeFolder, (name) =>
+      name.toLowerCase().endsWith(".json"),
+    );
+
+    const requested = vscode.env.language.toLowerCase().replace(/_/g, "-");
+    const normalizedFiles = new Map(
+      localeFiles.map((file) => [file.toLowerCase().replace(/\.json$/, ""), file]),
+    );
+
+    if (normalizedFiles.has(requested)) {
+      return vscode.Uri.joinPath(localeFolder, normalizedFiles.get(requested)!);
+    }
+
+    const primary = requested.split("-")[0];
+    const primaryMatch = localeFiles.find((file) =>
+      file.toLowerCase().replace(/\.json$/, "").startsWith(primary + "-"),
+    );
+    if (primaryMatch) {
+      return vscode.Uri.joinPath(localeFolder, primaryMatch);
+    }
+
+    const englishFile = localeFiles.find((file) => file.toLowerCase().startsWith("en-"));
+    if (englishFile) {
+      return vscode.Uri.joinPath(localeFolder, englishFile);
+    }
+
+    if (localeFiles.length > 0) {
+      return vscode.Uri.joinPath(localeFolder, localeFiles[0]);
+    }
+
+    throw new Error("No locale files found in l10n folder.");
+  }
+
   private postDrinkData(webview: vscode.Webview) {
-    const localeUri = vscode.Uri.joinPath(this._extensionUri, "en-US.json");
+    const localeUri = this.getLocaleUri();
     const locale = readJsonFile<any>(localeUri);
     const allDrinks = locale?.drinks ?? {};
 
@@ -91,9 +126,10 @@ class ClockViewProvider implements vscode.WebviewViewProvider {
     const drinkUri = webview.asWebviewUri(
       vscode.Uri.joinPath(this._extensionUri, "media", "drinks", "1.png"),
     );
+    const htmlLang = vscode.env.language || "en";
 
     return `<!doctype html>
-      <html lang="en">
+      <html lang="${htmlLang}">
       <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
