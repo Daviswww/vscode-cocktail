@@ -11,7 +11,8 @@ export function readJsonFile<T>(uri: vscode.Uri): T {
 }
 
 export function listFiles(uri: vscode.Uri): string[] {
-  return fs.readdirSync(uri.fsPath, { withFileTypes: true })
+  return fs
+    .readdirSync(uri.fsPath, { withFileTypes: true })
     .filter((entry) => entry.isFile())
     .map((entry) => entry.name);
 }
