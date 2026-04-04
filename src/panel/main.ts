@@ -61,13 +61,15 @@ function createStars(width: number, height: number) {
   const starCount = Math.max(40, Math.floor((width * height) / 14000));
   _stars = [];
   for (let i = 0; i < starCount; i++) {
+    const x = Math.random() * width;
+    const y = Math.random() * height;
     _stars.push({
-      x: Math.random() * width,
-      y: Math.random() * height,
+      x,
+      y,
       radius: Math.random() * 1.5 + 0.5,
-      baseAlpha: Math.random() * 0.5 + 0.2,
+      baseAlpha: Math.random() * 0.4 + 0.3,
       phase: Math.random() * Math.PI * 2,
-      speed: Math.random() * 0.04 + 0.01,
+      speed: Math.random() * 0.01 + 0.003,
     });
   }
 }
@@ -83,6 +85,8 @@ function drawStars(): void {
 
   const width = canvas.width;
   const height = canvas.height;
+  const now = performance.now();
+
   ctx.clearRect(0, 0, width, height);
   ctx.shadowColor = "rgba(255,255,255,0.9)";
   ctx.shadowBlur = 6;
