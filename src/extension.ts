@@ -2,28 +2,110 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
+class ClockViewProvider implements vscode.WebviewViewProvider {
+  public static readonly viewType = "vscode-cocktail.clockView";
+  constructor(private readonly _extensionUri: vscode.Uri) {}
+  private _webviewView?: vscode.WebviewView;
+
+  public resolveWebviewView(
+    webviewView: vscode.WebviewView,
+    _context: vscode.WebviewViewResolveContext,
+    _token: vscode.CancellationToken,
+  ) {
+    console.log("ClockViewProvider.resolveWebviewView called");
+    this._webviewView = webviewView;
+    webviewView.webview.options = {
+      enableScripts: true,
+    };
+    webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
+  }
+
+  public tick() {
+    if (this._webviewView) {
+      void this.getWebview().postMessage({ command: "tick" });
+    }
+  }
+
+  getWebview(): vscode.Webview {
+    if (this._webviewView === undefined) {
+      throw new Error(
+        vscode.l10n.t(
+          "Panel not active, make sure the clock view is visible before running this command.",
+        ),
+      );
+    } else {
+      return this._webviewView.webview;
+    }
+  }
+
+  private _getHtmlForWebview(webview: vscode.Webview): string {
+    const scriptPathOnDisk = vscode.Uri.joinPath(
+      this._extensionUri,
+      "media",
+      "main-bundle.js",
+    );
+    const scriptUri = webview.asWebviewUri(scriptPathOnDisk);
+    const styleUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(this._extensionUri, "media", "style.css"),
+    );
+
+    return `<!doctype html>
+      <html lang="en">
+      <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="${styleUri}" />
+      </head>
+      <body>
+        <div id="cocktailCanvasContainer">
+            <canvas id="backgroundEffectCanvas"></canvas>
+        </div>
+        <div class="clock" id="time">--:--:--</div>
+        <div class="date" id="date"></div>
+        <div id="background"></div>
+        <script src="${scriptUri}"></script>
+      </body>
+      </html>`;
+  }
+}
+
 export function activate(context: vscode.ExtensionContext) {
-  // Use the console to output diagnostic information (console.log) and errors (console.error)
-  // This line of code will only be executed once when your extension is activated
   console.log(
     'Congratulations, your extension "vscode-cocktail" is now active!',
   );
 
-  // The command has been defined in the package.json file
-  // Now provide the implementation of the command with registerCommand
-  // The commandId parameter must match the command field in package.json
-  const disposable = vscode.commands.registerCommand(
-    "vscode-cocktail.helloWorld",
-    () => {
-      // The code you place here will be executed every time your command is executed
-      // Display a message box to the user
-      vscode.window.showInformationMessage("Hello World from vscode-cocktail!");
-    },
+  // Register the clock view provider in Explorer
+  const clockProvider = new ClockViewProvider(context.extensionUri);
+  const registration = vscode.window.registerWebviewViewProvider(
+    ClockViewProvider.viewType,
+    clockProvider,
+  );
+  context.subscriptions.push(registration);
+  console.log("ClockViewProvider registered:", ClockViewProvider.viewType);
+
+  // Commands to help testing and revealing the view
+  context.subscriptions.push(
+    vscode.commands.registerCommand("vscode-cocktail.revealClock", async () => {
+      // Ensure Explorer is visible then instruct user to expand the view
+      await vscode.commands.executeCommand("workbench.view.explorer");
+      vscode.window.showInformationMessage(
+        'Explorer shown — expand "Cocktail Clock" view to activate it.',
+      );
+    }),
   );
 
-  context.subscriptions.push(disposable);
+  context.subscriptions.push(
+    vscode.commands.registerCommand("vscode-cocktail.tickClock", () => {
+      try {
+        clockProvider.tick();
+        vscode.window.showInformationMessage(
+          "Tick sent to clock view (if visible).",
+        );
+      } catch (err) {
+        vscode.window.showErrorMessage(String(err));
+      }
+    }),
+  );
 }
 // This method is called when your extension is deactivated
 export function deactivate() {}

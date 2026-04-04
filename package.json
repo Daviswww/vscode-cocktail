@@ -9,15 +9,34 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onView:vscode-cocktail.clockView"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
         "command": "vscode-cocktail.helloWorld",
         "title": "Hello World"
+      },
+      {
+        "command": "vscode-cocktail.revealClock",
+        "title": "Reveal Cocktail Clock"
+      },
+      {
+        "command": "vscode-cocktail.tickClock",
+        "title": "Send Tick to Cocktail Clock"
       }
-    ]
+    ],
+    "views": {
+      "explorer": [
+        {
+          "type": "webview",
+          "id": "vscode-cocktail.clockView",
+          "name": "Cocktail Clock"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
