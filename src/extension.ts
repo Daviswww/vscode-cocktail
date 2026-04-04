@@ -3,11 +3,12 @@
 import * as vscode from "vscode";
 import { listFilesFiltered, readJsonFile } from "./common/fileReader";
 
-class ClockViewProvider implements vscode.WebviewViewProvider {
+export class ClockViewProvider implements vscode.WebviewViewProvider {
   public static readonly viewType = "vscode-cocktail.cocktail";
   constructor(private readonly _extensionUri: vscode.Uri) {}
   private _webviewView?: vscode.WebviewView;
   private _messageDisposable?: vscode.Disposable;
+  private _languageOverride?: string;
 
   public resolveWebviewView(
     webviewView: vscode.WebviewView,
@@ -42,6 +43,32 @@ class ClockViewProvider implements vscode.WebviewViewProvider {
     }
   }
 
+  public toggleLanguage() {
+    const localeFolder = vscode.Uri.joinPath(this._extensionUri, "l10n");
+    const localeFiles = listFilesFiltered(localeFolder, (name) =>
+      name.toLowerCase().endsWith(".json"),
+    );
+    if (localeFiles.length === 0) {
+      return;
+    }
+
+    const normalized = localeFiles.map((file) => ({
+      file,
+      id: file.toLowerCase().replace(/\.json$/, ""),
+    }));
+    const current = (this._languageOverride ?? vscode.env.language)
+      .toLowerCase()
+      .replace(/_/g, "-");
+    const currentIndex = normalized.findIndex((item) => item.id === current);
+    const nextIndex =
+      currentIndex >= 0 ? (currentIndex + 1) % normalized.length : 0;
+    this._languageOverride = normalized[nextIndex].id;
+
+    if (this._webviewView) {
+      void this.postDrinkData(this.getWebview());
+    }
+  }
+
   getWebview(): vscode.Webview {
     if (this._webviewView === undefined) {
       throw new Error(
@@ -60,9 +87,14 @@ class ClockViewProvider implements vscode.WebviewViewProvider {
       name.toLowerCase().endsWith(".json"),
     );
 
-    const requested = vscode.env.language.toLowerCase().replace(/_/g, "-");
+    const requested = (this._languageOverride ?? vscode.env.language)
+      .toLowerCase()
+      .replace(/_/g, "-");
     const normalizedFiles = new Map(
-      localeFiles.map((file) => [file.toLowerCase().replace(/\.json$/, ""), file]),
+      localeFiles.map((file) => [
+        file.toLowerCase().replace(/\.json$/, ""),
+        file,
+      ]),
     );
 
     if (normalizedFiles.has(requested)) {
@@ -71,13 +103,18 @@ class ClockViewProvider implements vscode.WebviewViewProvider {
 
     const primary = requested.split("-")[0];
     const primaryMatch = localeFiles.find((file) =>
-      file.toLowerCase().replace(/\.json$/, "").startsWith(primary + "-"),
+      file
+        .toLowerCase()
+        .replace(/\.json$/, "")
+        .startsWith(primary + "-"),
     );
     if (primaryMatch) {
       return vscode.Uri.joinPath(localeFolder, primaryMatch);
     }
 
-    const englishFile = localeFiles.find((file) => file.toLowerCase().startsWith("en-"));
+    const englishFile = localeFiles.find((file) =>
+      file.toLowerCase().startsWith("en-"),
+    );
     if (englishFile) {
       return vscode.Uri.joinPath(localeFolder, englishFile);
     }
@@ -182,6 +219,16 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand("vscode-cocktail.randomDrink", () => {
       try {
         clockProvider.randomizeDrink();
+      } catch (err) {
+        vscode.window.showErrorMessage(String(err));
+      }
+    }),
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand("vscode-cocktail.toggleLanguage", () => {
+      try {
+        clockProvider.toggleLanguage();
       } catch (err) {
         vscode.window.showErrorMessage(String(err));
       }

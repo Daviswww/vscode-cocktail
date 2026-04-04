@@ -22,6 +22,10 @@
           "dark": "media/icon/dark-circle-outline.svg",
           "light": "media/icon/light-circle-outline.svg"
         }
+      },
+      {
+        "command": "vscode-cocktail.toggleLanguage",
+        "title": "Toggle Language"
       }
     ],
     "views": {
@@ -38,6 +42,11 @@
       "view/title": [
         {
           "command": "vscode-cocktail.randomDrink",
+          "when": "view == vscode-cocktail.cocktail",
+          "group": "navigation"
+        },
+        {
+          "command": "vscode-cocktail.toggleLanguage",
           "when": "view == vscode-cocktail.cocktail",
           "group": "navigation"
         }
