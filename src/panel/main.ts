@@ -258,9 +258,19 @@ function handlePanelMessage(message: PanelMessage): void {
   }
 
   if (message.command === "key-press") {
-    _keyPressCount = Math.min(KEY_PRESS_TARGET, _keyPressCount + 1);
-    updateKeyProgress();
+    incrementKeyPress();
     return;
+  }
+}
+
+function incrementKeyPress(): void {
+  _keyPressCount = Math.min(KEY_PRESS_TARGET, _keyPressCount + 1);
+  updateKeyProgress();
+
+  if (_keyPressCount >= KEY_PRESS_TARGET) {
+    setRandomDrink();
+    _keyPressCount = 0;
+    updateKeyProgress();
   }
 }
 
@@ -313,8 +323,7 @@ function handleKeyDown(event: KeyboardEvent): void {
   if (event.repeat) {
     return;
   }
-  _keyPressCount = Math.min(KEY_PRESS_TARGET, _keyPressCount + 1);
-  updateKeyProgress();
+  incrementKeyPress();
 }
 
 function notifyExtensionReady(): void {
