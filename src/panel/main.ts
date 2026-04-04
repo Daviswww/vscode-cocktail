@@ -147,7 +147,8 @@ type PanelMessage =
       drinks: Record<string, DrinkItem>;
       drinkBaseUri: string;
     }
-  | { command: "random-drink" };
+  | { command: "random-drink" }
+  | { command: "key-press" };
 
 let drinks: Record<string, DrinkItem> = {};
 let drinkBaseUri = "";

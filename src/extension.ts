@@ -1,7 +1,10 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import * as fs from "fs";
 import * as vscode from "vscode";
+import {
+  listFilesFiltered,
+  readJsonFile,
+} from "./common/fileReader";
 
 class ClockViewProvider implements vscode.WebviewViewProvider {
   public static readonly viewType = "vscode-cocktail.cocktail";
@@ -56,8 +59,7 @@ class ClockViewProvider implements vscode.WebviewViewProvider {
 
   private postDrinkData(webview: vscode.Webview) {
     const localeUri = vscode.Uri.joinPath(this._extensionUri, "en-US.json");
-    const localeRaw = fs.readFileSync(localeUri.fsPath, "utf8");
-    const locale = JSON.parse(localeRaw) as any;
+    const locale = readJsonFile<any>(localeUri);
     const allDrinks = locale?.drinks ?? {};
 
     const drinksFolder = vscode.Uri.joinPath(
@@ -65,9 +67,9 @@ class ClockViewProvider implements vscode.WebviewViewProvider {
       "media",
       "drinks",
     );
-    const imageFiles = fs
-      .readdirSync(drinksFolder.fsPath)
-      .filter((name) => name.toLowerCase().endsWith(".png"));
+    const imageFiles = listFilesFiltered(drinksFolder, (name) =>
+      name.toLowerCase().endsWith(".png"),
+    );
     const availableDrinkIds = new Set(
       imageFiles.map((name) => name.replace(/\.png$/i, "")),
     );
