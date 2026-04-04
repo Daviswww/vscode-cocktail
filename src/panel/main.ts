@@ -254,6 +254,13 @@ function handlePanelMessage(message: PanelMessage): void {
 
   if (message.command === "random-drink") {
     setRandomDrink();
+    return;
+  }
+
+  if (message.command === "key-press") {
+    _keyPressCount = Math.min(KEY_PRESS_TARGET, _keyPressCount + 1);
+    updateKeyProgress();
+    return;
   }
 }
 
@@ -288,6 +295,28 @@ export function cocktailPanelApp() {
 
 const vscode = (window as any).acquireVsCodeApi();
 
+let _keyPressCount = 0;
+const KEY_PRESS_TARGET = 100;
+
+function updateKeyProgress(): void {
+  const fill = document.getElementById(
+    "keyProgressFill",
+  ) as HTMLDivElement | null;
+  if (!fill) {
+    return;
+  }
+  const percent = Math.min(100, (_keyPressCount / KEY_PRESS_TARGET) * 100);
+  fill.style.width = `${percent}%`;
+}
+
+function handleKeyDown(event: KeyboardEvent): void {
+  if (event.repeat) {
+    return;
+  }
+  _keyPressCount = Math.min(KEY_PRESS_TARGET, _keyPressCount + 1);
+  updateKeyProgress();
+}
+
 function notifyExtensionReady(): void {
   vscode.postMessage({ command: "ready" });
 }
@@ -297,6 +326,7 @@ function setupPanel(): void {
   initForegroundCanvas();
   initClock();
   notifyExtensionReady();
+  window.addEventListener("keydown", handleKeyDown);
   window.addEventListener("resize", () => {
     initCanvas("backgroundEffectCanvas", true);
     initForegroundCanvas();

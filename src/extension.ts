@@ -117,7 +117,9 @@ class ClockViewProvider implements vscode.WebviewViewProvider {
               <div class="recipe-text" id="drinkRecipe">Loading...</div>
             </div>
           </div>
-
+          <div class="key-progress">
+            <div class="key-progress-fill" id="keyProgressFill"></div>
+          </div>
         </div>
         <script src="${scriptUri}"></script>
       </body>
@@ -147,6 +149,21 @@ export function activate(context: vscode.ExtensionContext) {
         clockProvider.randomizeDrink();
       } catch (err) {
         vscode.window.showErrorMessage(String(err));
+      }
+    }),
+  );
+
+  context.subscriptions.push(
+    vscode.workspace.onDidChangeTextDocument((event) => {
+      if (event.contentChanges.length === 0) {
+        return;
+      }
+      if (clockProvider) {
+        try {
+          void clockProvider.getWebview().postMessage({ command: "key-press" });
+        } catch {
+          // ignore if view is not active
+        }
       }
     }),
   );
