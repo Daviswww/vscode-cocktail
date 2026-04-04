@@ -1,7 +1,6 @@
 import * as assert from "assert";
 import * as path from "path";
 import * as vscode from "vscode";
-import { listFilesFiltered } from "../common/fileReader";
 
 const extensionModule = require("../extension") as {
   ClockViewProvider: typeof vscode.Disposable;
@@ -10,52 +9,42 @@ const ClockViewProvider = extensionModule.ClockViewProvider as any;
 
 type ClockViewProviderType = {
   toggleLanguage(): void;
-  _languageOverride?: string;
   getLocaleUri(): vscode.Uri;
 };
 
-suite("Extension Language Toggle", () => {
-  test("toggleLanguage updates locale override and changes locale selection", () => {
+suite("Extension Language Configuration", () => {
+  test("getLocaleUri respects vscode-cocktail.language setting", async () => {
     const extensionRoot = path.join(__dirname, "..", "..");
     const extensionUri = vscode.Uri.file(extensionRoot);
     const provider = new ClockViewProvider(
       extensionUri,
     ) as ClockViewProviderType;
 
-    const l10nFolder = vscode.Uri.file(path.join(extensionRoot, "l10n"));
-    const localeFiles = listFilesFiltered(l10nFolder, (name) =>
-      name.toLowerCase().endsWith(".json"),
-    );
-    assert.ok(
-      localeFiles.length >= 2,
-      "Expected at least two locale files for toggle test",
-    );
+    const config = vscode.workspace.getConfiguration("vscode-cocktail");
+    const original = config.get<string>("language");
 
-    assert.ok(
-      localeFiles.length >= 2,
-      "Expected at least two locale files for toggle test",
-    );
+    try {
+      await config.update(
+        "language",
+        "ja-JP",
+        vscode.ConfigurationTarget.Workspace,
+      );
+      const localeUri = provider.getLocaleUri();
+      assert.strictEqual(path.basename(localeUri.fsPath, ".json"), "ja-JP");
 
-    const firstLocaleId = localeFiles[0].toLowerCase().replace(/\.json$/, "");
-    provider._languageOverride = firstLocaleId;
-
-    provider.toggleLanguage();
-    const overrideLocale = provider._languageOverride;
-
-    assert.ok(
-      typeof overrideLocale === "string",
-      "Language override should be set after toggle",
-    );
-    assert.notStrictEqual(
-      overrideLocale,
-      firstLocaleId,
-      "Toggle should move to a different locale file",
-    );
-
-    const nextLocaleUri = provider.getLocaleUri();
-    const nextLocaleId = path
-      .basename(nextLocaleUri.fsPath, ".json")
-      .toLowerCase();
-    assert.strictEqual(nextLocaleId, overrideLocale);
+      await config.update(
+        "language",
+        "zh-TW",
+        vscode.ConfigurationTarget.Workspace,
+      );
+      const localeUri2 = provider.getLocaleUri();
+      assert.strictEqual(path.basename(localeUri2.fsPath, ".json"), "zh-TW");
+    } finally {
+      await config.update(
+        "language",
+        original,
+        vscode.ConfigurationTarget.Workspace,
+      );
+    }
   });
 });

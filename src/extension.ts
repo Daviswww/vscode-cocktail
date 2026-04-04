@@ -8,9 +8,9 @@ export class ClockViewProvider implements vscode.WebviewViewProvider {
   constructor(private readonly _extensionUri: vscode.Uri) {}
   private _webviewView?: vscode.WebviewView;
   private _messageDisposable?: vscode.Disposable;
-  private _languageOverride?: string;
-  private _currentDrinkDescription?: string;
-  private _currentDrinkName?: string;
+  public _currentDrinkDescription?: string;
+  public _currentDrinkMethod?: string;
+  public _currentDrinkName?: string;
 
   public resolveWebviewView(
     webviewView: vscode.WebviewView,
@@ -33,6 +33,7 @@ export class ClockViewProvider implements vscode.WebviewViewProvider {
         if (message?.command === "current-drink") {
           this._currentDrinkName = message.name;
           this._currentDrinkDescription = message.description;
+          this._currentDrinkMethod = message.method;
           return;
         }
       },
@@ -51,29 +52,18 @@ export class ClockViewProvider implements vscode.WebviewViewProvider {
     }
   }
 
-  public toggleLanguage() {
-    const localeFolder = vscode.Uri.joinPath(this._extensionUri, "l10n");
-    const localeFiles = listFilesFiltered(localeFolder, (name) =>
-      name.toLowerCase().endsWith(".json"),
-    );
-    if (localeFiles.length === 0) {
-      return;
-    }
-
-    const normalized = localeFiles.map((file) => ({
-      file,
-      id: file.toLowerCase().replace(/\.json$/, ""),
-    }));
-    const current = (this._languageOverride ?? vscode.env.language)
-      .toLowerCase()
-      .replace(/_/g, "-");
-    const currentIndex = normalized.findIndex((item) => item.id === current);
-    const nextIndex =
-      currentIndex >= 0 ? (currentIndex + 1) % normalized.length : 0;
-    this._languageOverride = normalized[nextIndex].id;
-
-    if (this._webviewView) {
-      void this.postDrinkData(this.getWebview());
+  public showMethodMessage() {
+    if (this._currentDrinkMethod) {
+      const prefix = this._currentDrinkName
+        ? `${this._currentDrinkName}: `
+        : "";
+      vscode.window.showInformationMessage(
+        `${prefix}${this._currentDrinkMethod}`,
+      );
+    } else {
+      vscode.window.showInformationMessage(
+        "No cocktail selected yet. Open the Cocktail view and choose a drink first.",
+      );
     }
   }
 
@@ -95,7 +85,9 @@ export class ClockViewProvider implements vscode.WebviewViewProvider {
       name.toLowerCase().endsWith(".json"),
     );
 
-    const requested = (this._languageOverride ?? vscode.env.language)
+    const config = vscode.workspace.getConfiguration("vscode-cocktail");
+    const configuredLanguage = config.get<string>("language");
+    const requested = (configuredLanguage ?? vscode.env.language)
       .toLowerCase()
       .replace(/_/g, "-");
     const normalizedFiles = new Map(
@@ -134,7 +126,7 @@ export class ClockViewProvider implements vscode.WebviewViewProvider {
     throw new Error("No locale files found in l10n folder.");
   }
 
-  private postDrinkData(webview: vscode.Webview) {
+  public postDrinkData(webview: vscode.Webview) {
     const localeUri = this.getLocaleUri();
     const locale = readJsonFile<any>(localeUri);
     const allDrinks = locale?.drinks ?? {};
@@ -222,11 +214,10 @@ export function activate(context: vscode.ExtensionContext) {
   );
   context.subscriptions.push(registration);
   console.log("ClockViewProvider registered:", ClockViewProvider.viewType);
-
   context.subscriptions.push(
-    vscode.commands.registerCommand("vscode-cocktail.randomDrink", () => {
+    vscode.commands.registerCommand("vscode-cocktail.showMethodMessage", () => {
       try {
-        clockProvider.randomizeDrink();
+        clockProvider.showMethodMessage();
       } catch (err) {
         vscode.window.showErrorMessage(String(err));
       }
@@ -234,9 +225,23 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand("vscode-cocktail.toggleLanguage", () => {
+    vscode.workspace.onDidChangeConfiguration((event) => {
+      if (event.affectsConfiguration("vscode-cocktail.language")) {
+        try {
+          if (clockProvider) {
+            void clockProvider.postDrinkData(clockProvider.getWebview());
+          }
+        } catch {
+          // view may not be active
+        }
+      }
+    }),
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand("vscode-cocktail.randomDrink", () => {
       try {
-        clockProvider.toggleLanguage();
+        clockProvider.randomizeDrink();
       } catch (err) {
         vscode.window.showErrorMessage(String(err));
       }

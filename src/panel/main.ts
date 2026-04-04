@@ -108,38 +108,11 @@ function animateStars(): void {
   drawStars();
   _starAnimation = window.requestAnimationFrame(animateStars);
 }
-function pad(n: number): string {
-  return n < 10 ? "0" + n : String(n);
-}
-
-export function initClock(): void {
-  // clear previous interval if any
-  if (_clockInterval) {
-    window.clearInterval(_clockInterval);
-    _clockInterval = undefined;
-  }
-
-  const t = document.getElementById("time");
-  const d = document.getElementById("date");
-
-  function update() {
-    const now = new Date();
-    if (t) {
-      t.textContent = now.toLocaleTimeString();
-    }
-    if (d) {
-      d.textContent = now.toLocaleDateString();
-    }
-  }
-
-  _clockInterval = window.setInterval(update, 1000);
-  update();
-}
-
 interface DrinkItem {
   name: string;
   recipe: string;
   description: string;
+  method: string;
 }
 
 type PanelMessage =
@@ -281,6 +254,7 @@ function postCurrentDrinkDescription(drink: DrinkItem): void {
     command: "current-drink",
     name: drink.name,
     description: drink.description,
+    method: drink.method,
   });
 }
 
@@ -316,7 +290,6 @@ function initForegroundCanvas(): void {
 export function cocktailPanelApp() {
   initCanvas("backgroundEffectCanvas", true);
   initForegroundCanvas();
-  initClock();
 
   window.addEventListener("resize", () => {
     initCanvas("backgroundEffectCanvas", true);

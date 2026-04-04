@@ -16,8 +16,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "vscode-cocktail.toggleLanguage",
-        "title": "Toggle Language",
+        "command": "vscode-cocktail.showMethodMessage",
+        "title": "Show Cocktail Method",
         "icon": {
           "dark": "media/icon/dark-triangle-outline.svg",
           "light": "media/icon/light-triangle-outline.svg"
@@ -40,6 +40,21 @@
         }
       }
     ],
+    "configuration": {
+      "title": "Cocktail",
+      "properties": {
+        "vscode-cocktail.language": {
+          "type": "string",
+          "enum": [
+            "en-US",
+            "zh-TW",
+            "ja-JP"
+          ],
+          "default": "en-US",
+          "description": "Select the language locale for the cocktail view."
+        }
+      }
+    },
     "views": {
       "explorer": [
         {
@@ -58,7 +73,7 @@
           "group": "navigation"
         },
         {
-          "command": "vscode-cocktail.toggleLanguage",
+          "command": "vscode-cocktail.showMethodMessage",
           "when": "view == vscode-cocktail.cocktail",
           "group": "navigation"
         },
