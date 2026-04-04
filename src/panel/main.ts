@@ -180,13 +180,57 @@ function updateDrinkDisplay(id: string): void {
   }
 }
 
+let _drinkAnimating = false;
+function animateDrinkChange(id: string): void {
+  const drinkImg = document.querySelector<HTMLImageElement>(".drink");
+  const nameEl = getElement<HTMLDivElement>("drinkName");
+  const recipeEl = getElement<HTMLDivElement>("drinkRecipe");
+  const drink = drinks[id];
+
+  if (!drink || !drinkImg) {
+    updateDrinkDisplay(id);
+    return;
+  }
+
+  if (_drinkAnimating) {
+    return;
+  }
+
+  _drinkAnimating = true;
+  drinkImg.classList.add("drink-change-out");
+
+  const finishOut = () => {
+    drinkImg.removeEventListener("transitionend", finishOut);
+    drinkImg.classList.remove("drink-change-out");
+
+    drinkImg.src = `${drinkBaseUri}/${id}.png`;
+    drinkImg.alt = drink.name;
+    if (nameEl) {
+      nameEl.textContent = drink.name;
+    }
+    if (recipeEl) {
+      recipeEl.innerHTML = drink.recipe.replace(/\n/g, "<br />");
+    }
+
+    drinkImg.classList.add("drink-change-in");
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        drinkImg.classList.remove("drink-change-in");
+        _drinkAnimating = false;
+      });
+    });
+  };
+
+  drinkImg.addEventListener("transitionend", finishOut, { once: true });
+}
+
 function setRandomDrink(): void {
   const keys = Object.keys(drinks);
   if (keys.length === 0) {
     return;
   }
   const id = keys[Math.floor(Math.random() * keys.length)];
-  updateDrinkDisplay(id);
+  animateDrinkChange(id);
 }
 
 function handlePanelMessage(message: PanelMessage): void {
