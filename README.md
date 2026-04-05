@@ -17,7 +17,7 @@ A lightweight VS Code extension that turns your editor into a mini cocktail bar.
 
 ## Installation
 
-Install this extension from the VS Code Marketplace.
+Install this extension from the VS Code [Marketplace](https://marketplace.visualstudio.com/items?itemName=DavisHo.vscode-cocktail).
 
 ## Features
 
