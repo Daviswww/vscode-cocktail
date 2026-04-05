@@ -124,7 +124,7 @@ body {
   padding: 16px;
   background: rgba(0, 0, 0, 0.45);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 18px;
+  border-radius: 9px;
   backdrop-filter: blur(12px);
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
   color: #ffffff;
@@ -146,16 +146,7 @@ body {
 .key-progress-fill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(
-    90deg,
-    #ff0000,
-    #ff9900,
-    #ffff00,
-    #00ff00,
-    #00ffff,
-    #0000ff,
-    #ff00ff
-  );
+  background: rgba(0, 0, 0, 0.3);
   transition: width 0.1s ease;
 }
 
@@ -171,7 +162,7 @@ body {
   font-size: 14px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #9cd5ff;
+  color: #e8f6ff;
   margin-bottom: 10px;
 }
 
