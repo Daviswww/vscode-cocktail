@@ -1,71 +1,62 @@
-# vscode-cocktail README
+# VS Code Cocktail
 
-This is the README for your extension "vscode-cocktail". After writing up a brief description, we recommend including the following sections.
+A lightweight VS Code extension that turns your editor into a mini cocktail bar.
+
+![VS Code Cocktail](./docs/source/VSCodeCocktailView.png)
+
+## Table of Contents
+
+- [VS Code Cocktail](#vs-code-cocktail)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+  - [Features](#features)
+  - [Development](#development)
+  - [Build \& Test](#build--test)
+  - [Localization](#localization)
+  - [Contributing](#contributing)
+
+## Installation
+
+Install this extension from the VS Code Marketplace.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- Display cocktail listings
+- View cocktail ingredients, flavor notes, and preparation methods
+- Randomly select a cocktail
+- Show the current cocktail's flavor or preparation instructions
+- Supports localization with built-in `en-US`, `ja-JP`, and `zh-TW`
 
-For example if there is an image subfolder under your extension project workspace:
+## Development
 
-\!\[feature X\]\(images/feature-x.png\)
+1. Open VS Code and press `F5` to run the extension in the Extension Development Host.
+2. Open the Cocktail view in the sidebar (registered under Explorer).
+3. When the view loads, it automatically loads available cocktail information and images. You can browse ingredients, preparation steps, and flavor descriptions.
+4. Use the command palette (`Ctrl/Cmd+Shift+P`) to run these commands:
+   - `vscode-cocktail.randomDrink`: trigger a random cocktail selection in the panel.
+   - `vscode-cocktail.showFlavorMessage`: display the current cocktail's flavor description as a notification.
+   - `vscode-cocktail.showMethodMessage`: display the current cocktail's preparation method as a notification.
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+## Build & Test
 
-## Requirements
+- Install dependencies: `npm install`
+- Compile and bundle:
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+```bash
+npm run compile
+```
 
-## Extension Settings
+- Run tests:
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+```bash
+npm test
+```
 
-For example:
+## Localization
 
-This extension contributes the following settings:
+- Cocktail data and localization strings are stored in the `l10n` and `media/drinks` folders.
+- To add a new language, add a corresponding `.json` file to `l10n` and select the language in settings.
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+## Contributing
 
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+- Contributions are welcome. Feel free to submit a PR, report bugs, or suggest new cocktails.
