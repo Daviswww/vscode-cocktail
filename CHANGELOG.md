@@ -2,6 +2,10 @@
 
 All notable changes to the "vscode-cocktail" extension will be documented in this file.
 
+## [1.0.1]
+
+- Added extension icon
+
 ## [1.0.0]
 
 - Display cocktail listings
