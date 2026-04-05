@@ -7,6 +7,7 @@
   "engines": {
     "vscode": "^1.110.0"
   },
+  "icon": "media/icon/logo.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/Daviswww/vscode-cocktail.git"
