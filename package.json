@@ -1,10 +1,15 @@
 {
   "name": "vscode-cocktail",
-  "displayName": "vscode-cocktail",
-  "description": "Cocktail for your VS Code",
+  "displayName": "VSCode Cocktail",
+  "description": "A lightweight VS Code extension that turns your editor into a mini cocktail bar.",
+  "publisher": "DavisHo",
   "version": "1.0.0",
   "engines": {
-    "vscode": "^1.109.5"
+    "vscode": "^1.110.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Daviswww/vscode-cocktail.git"
   },
   "categories": [
     "Other"
