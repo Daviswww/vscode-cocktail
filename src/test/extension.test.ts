@@ -1,6 +1,6 @@
 import * as assert from "assert";
 
-suite("Panel Main Test Suite", () => {
+suite("Panel Main setRandomDrink Test Suite", () => {
   interface DomEnv {
     window: any;
     document: any;
@@ -48,10 +48,15 @@ suite("Panel Main Test Suite", () => {
         beginPath: () => {},
         arc: () => {},
         fill: () => {},
+        save: () => {},
+        restore: () => {},
+        translate: () => {},
+        rotate: () => {},
+        fillStyle: "",
         shadowColor: "",
         shadowBlur: 0,
+        globalCompositeOperation: "source-over",
         globalAlpha: 1,
-        fillStyle: "",
       };
       canvas.parentElement = canvas;
       return canvas;
@@ -59,8 +64,8 @@ suite("Panel Main Test Suite", () => {
 
     elements.backgroundEffectCanvas = createCanvas("backgroundEffectCanvas");
     elements.foregroundEffectCanvas = createCanvas("foregroundEffectCanvas");
-    elements.time = { textContent: "" };
-    elements.date = { textContent: "" };
+    elements.drinkName = { textContent: "" };
+    elements.drinkRecipe = { innerHTML: "" };
     elements.keyProgressFill = { style: { width: "" } };
 
     const win: any = {
@@ -69,8 +74,6 @@ suite("Panel Main Test Suite", () => {
       innerHeight: 240,
       requestAnimationFrame: (_cb: any) => 1,
       cancelAnimationFrame: (_id: any) => {},
-      setInterval: (_fn: any, _ms: any) => 1,
-      clearInterval: (_id: any) => {},
       addEventListener: (type: string, callback: Function) =>
         addListener(windowListeners, type, callback),
       removeEventListener: (type: string, callback: Function) => {
@@ -130,48 +133,84 @@ suite("Panel Main Test Suite", () => {
     delete (global as any).document;
   });
 
-  test("setupPanel posts ready message and registers listeners on DOMContentLoaded", () => {
+  test("random-drink with no drinks does not post current-drink", () => {
     const env = setupDomEnv();
     clearModuleCache();
     require("../panel/main");
     env.triggerDocumentEvent("DOMContentLoaded");
+    env.postMessages.length = 0;
+
+    env.triggerWindowEvent("message", { data: { command: "random-drink" } });
+
+    assert.strictEqual(env.postMessages.length, 0);
+  });
+
+  test("init-drinks displays a drink and posts current-drink", () => {
+    const env = setupDomEnv();
+    clearModuleCache();
+    require("../panel/main");
+    env.triggerDocumentEvent("DOMContentLoaded");
+    env.postMessages.length = 0;
+
+    const drinks = {
+      mojito: {
+        name: "Mojito",
+        recipe: "Rum\nMint\nLime",
+        description: "A refreshing mint cocktail",
+        method: "Stir and serve over ice",
+      },
+    };
+
+    env.triggerWindowEvent("message", {
+      data: {
+        command: "init-drinks",
+        drinks,
+        drinkBaseUri: "/images",
+      },
+    });
 
     assert.strictEqual(env.postMessages.length, 1);
-    assert.deepStrictEqual(env.postMessages[0], { command: "ready" });
-    assert.ok(env.windowEventTypes().includes("keydown"));
-    assert.ok(env.windowEventTypes().includes("resize"));
-    assert.ok(env.elements.time.textContent.length > 0);
-    assert.ok(env.elements.date.textContent.length > 0);
-    assert.ok(env.elements.backgroundEffectCanvas.width > 0);
-    assert.ok(env.elements.foregroundEffectCanvas.width > 0);
+    assert.deepStrictEqual(env.postMessages[0], {
+      command: "current-drink",
+      name: "Mojito",
+      description: "A refreshing mint cocktail",
+      method: "Stir and serve over ice",
+    });
+    assert.strictEqual(env.elements.drinkName.textContent, "Mojito");
+    assert.strictEqual(
+      env.elements.drinkRecipe.innerHTML,
+      "Rum<br />Mint<br />Lime",
+    );
   });
 
-  test("keydown event increments key progress", () => {
+  test("random-drink posts current-drink again after init-drinks", () => {
     const env = setupDomEnv();
     clearModuleCache();
     require("../panel/main");
     env.triggerDocumentEvent("DOMContentLoaded");
 
-    env.triggerWindowEvent("keydown", { repeat: false });
-    assert.strictEqual(env.elements.keyProgressFill.style.width, "1%");
+    const drinks = {
+      margarita: {
+        name: "Margarita",
+        recipe: "Tequila\nTriple sec\nLime juice",
+        description: "A tart and citrusy classic",
+        method: "Shake with ice and strain",
+      },
+    };
 
-    env.triggerWindowEvent("keydown", { repeat: true });
-    assert.strictEqual(env.elements.keyProgressFill.style.width, "1%");
-  });
+    env.triggerWindowEvent("message", {
+      data: {
+        command: "init-drinks",
+        drinks,
+        drinkBaseUri: "/images",
+      },
+    });
 
-  test("resize event reinitializes canvas dimensions", () => {
-    const env = setupDomEnv();
-    clearModuleCache();
-    require("../panel/main");
-    env.triggerDocumentEvent("DOMContentLoaded");
+    env.postMessages.length = 0;
+    env.triggerWindowEvent("message", { data: { command: "random-drink" } });
 
-    env.elements.backgroundEffectCanvas.width = 0;
-    env.elements.backgroundEffectCanvas.height = 0;
-    env.elements.foregroundEffectCanvas.width = 0;
-    env.elements.foregroundEffectCanvas.height = 0;
-
-    env.triggerWindowEvent("resize", {});
-    assert.ok(env.elements.backgroundEffectCanvas.width > 0);
-    assert.ok(env.elements.foregroundEffectCanvas.width > 0);
+    assert.strictEqual(env.postMessages.length, 1);
+    assert.strictEqual(env.postMessages[0].command, "current-drink");
+    assert.strictEqual(env.postMessages[0].name, "Margarita");
   });
 });

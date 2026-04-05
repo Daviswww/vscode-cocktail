@@ -3,11 +3,11 @@ import * as path from "path";
 import * as vscode from "vscode";
 
 const extensionModule = require("../extension") as {
-  ClockViewProvider: typeof vscode.Disposable;
+  CocktailViewProvider: typeof vscode.Disposable;
 };
-const ClockViewProvider = extensionModule.ClockViewProvider as any;
+const CocktailViewProvider = extensionModule.CocktailViewProvider as any;
 
-type ClockViewProviderType = {
+type CocktailViewProviderType = {
   toggleLanguage(): void;
   getLocaleUri(): vscode.Uri;
 };
@@ -16,9 +16,9 @@ suite("Extension Language Configuration", () => {
   test("getLocaleUri respects vscode-cocktail.language setting", async () => {
     const extensionRoot = path.join(__dirname, "..", "..");
     const extensionUri = vscode.Uri.file(extensionRoot);
-    const provider = new ClockViewProvider(
+    const provider = new CocktailViewProvider(
       extensionUri,
-    ) as ClockViewProviderType;
+    ) as CocktailViewProviderType;
 
     const config = vscode.workspace.getConfiguration("vscode-cocktail");
     const original = config.get<string>("language");
@@ -27,7 +27,7 @@ suite("Extension Language Configuration", () => {
       await config.update(
         "language",
         "ja-JP",
-        vscode.ConfigurationTarget.Workspace,
+        vscode.ConfigurationTarget.Global,
       );
       const localeUri = provider.getLocaleUri();
       assert.strictEqual(path.basename(localeUri.fsPath, ".json"), "ja-JP");
@@ -35,7 +35,7 @@ suite("Extension Language Configuration", () => {
       await config.update(
         "language",
         "zh-TW",
-        vscode.ConfigurationTarget.Workspace,
+        vscode.ConfigurationTarget.Global,
       );
       const localeUri2 = provider.getLocaleUri();
       assert.strictEqual(path.basename(localeUri2.fsPath, ".json"), "zh-TW");
@@ -43,7 +43,7 @@ suite("Extension Language Configuration", () => {
       await config.update(
         "language",
         original,
-        vscode.ConfigurationTarget.Workspace,
+        vscode.ConfigurationTarget.Global,
       );
     }
   });
