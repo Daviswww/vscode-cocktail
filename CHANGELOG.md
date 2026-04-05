@@ -2,8 +2,10 @@
 
 All notable changes to the "vscode-cocktail" extension will be documented in this file.
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
 ## [1.0.0]
 
-- Initial release
+- Display cocktail listings
+- View cocktail ingredients, flavor notes, and preparation methods
+- Randomly select a cocktail
+- Show the current cocktail's flavor or preparation instructions
+- Supports localization with built-in `en-US`, `ja-JP`, and `zh-TW`

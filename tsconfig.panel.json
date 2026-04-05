@@ -1,0 +1,28 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "module": "esnext",
+        "target": "es2017",
+        "lib": [
+            "es2017",
+            "dom"
+        ],
+        "outDir": "out-panel",
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "rootDirs": [
+            "panel",
+            "common"
+        ],
+        "strict": true
+    },
+    "exclude": [
+        "node_modules",
+        ".vscode-test",
+        "src/extension",
+        "src/test"
+    ],
+    "include": [
+        "src/panel/**/*"
+    ]
+}

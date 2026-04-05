@@ -1,23 +1,94 @@
 {
   "name": "vscode-cocktail",
-  "displayName": "vscode-cocktail",
-  "description": "Cocktail for your VS Code",
+  "displayName": "VSCode Cocktail",
+  "description": "A lightweight VS Code extension that turns your editor into a mini cocktail bar.",
+  "publisher": "DavisHo",
   "version": "1.0.0",
   "engines": {
     "vscode": "^1.110.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Daviswww/vscode-cocktail.git"
+  },
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onView:vscode-cocktail.cocktail"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "vscode-cocktail.helloWorld",
-        "title": "Hello World"
+        "command": "vscode-cocktail.showMethodMessage",
+        "title": "Show Cocktail Method",
+        "icon": {
+          "dark": "media/icon/dark-triangle-outline.svg",
+          "light": "media/icon/light-triangle-outline.svg"
+        }
+      },
+      {
+        "command": "vscode-cocktail.randomDrink",
+        "title": "Randomize Cocktail",
+        "icon": {
+          "dark": "media/icon/dark-rect-outline.svg",
+          "light": "media/icon/light-rect-outline.svg"
+        }
+      },
+      {
+        "command": "vscode-cocktail.showFlavorMessage",
+        "title": "Show Flavor Message",
+        "icon": {
+          "dark": "media/icon/dark-circle-outline.svg",
+          "light": "media/icon/light-circle-outline.svg"
+        }
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Cocktail",
+      "properties": {
+        "vscode-cocktail.language": {
+          "type": "string",
+          "enum": [
+            "en-US",
+            "zh-TW",
+            "ja-JP"
+          ],
+          "default": "en-US",
+          "description": "Select the language locale for the cocktail view."
+        }
+      }
+    },
+    "views": {
+      "explorer": [
+        {
+          "type": "webview",
+          "id": "vscode-cocktail.cocktail",
+          "name": "Cocktail",
+          "icon": "media/icon/cocktail.svg"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "vscode-cocktail.randomDrink",
+          "when": "view == vscode-cocktail.cocktail",
+          "group": "navigation"
+        },
+        {
+          "command": "vscode-cocktail.showMethodMessage",
+          "when": "view == vscode-cocktail.cocktail",
+          "group": "navigation"
+        },
+        {
+          "command": "vscode-cocktail.showFlavorMessage",
+          "when": "view == vscode-cocktail.cocktail",
+          "group": "navigation"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
@@ -31,16 +102,15 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.110.0",
-    "@types/mocha": "^10.0.10",
     "@types/node": "22.x",
-    "typescript-eslint": "^8.56.1",
-    "eslint": "^9.39.3",
-    "typescript": "^5.9.3",
-    "ts-loader": "^9.5.4",
-    "webpack": "^5.105.3",
-    "webpack-cli": "^6.0.1",
+    "@types/vscode": "^1.110.0",
     "@vscode/test-cli": "^0.0.12",
-    "@vscode/test-electron": "^2.5.2"
+    "@vscode/test-electron": "^2.5.2",
+    "eslint": "^9.39.3",
+    "ts-loader": "^9.5.4",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.56.1",
+    "webpack": "^5.105.3",
+    "webpack-cli": "^6.0.1"
   }
 }

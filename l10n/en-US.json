@@ -1,0 +1,292 @@
+{
+    "drinks": {
+        "1": {
+            "name": "Negroni",
+            "recipe": "Gin: 1 oz\nCampari: 1 oz\nSweet Vermouth: 1 oz\nOrange slice or orange peel",
+            "method": "Pour gin, Campari, and sweet vermouth into a mixing glass with ice. Stir well and strain into an old-fashioned glass filled with ice. Garnish with an orange slice or orange peel.",
+            "description": "The Negroni offers a perfect balance of bitterness and sweetness, with a layered flavor and a vibrant orange-red hue—an all-time classic."
+        },
+        "2": {
+            "name": "Martini",
+            "recipe": "Gin: 2 oz\nDry Vermouth: 0.5 oz\nOlive or lemon twist",
+            "method": "Combine gin and dry vermouth in a mixing glass with ice, stir well, and strain into a chilled martini glass. Garnish with an olive or lemon twist.",
+            "description": "The Martini is the quintessential classic cocktail—clean, crisp, and aromatic, highlighting the botanicals of gin."
+        },
+        "3": {
+            "name": "Sazerac",
+            "recipe": "Rye whiskey or cognac: 2 oz\nAbsinthe: a few drops (to rinse the glass)\nSugar cube: 1\nAngostura bitters: 2 dashes\nLemon peel",
+            "method": "Rinse a chilled glass with absinthe and discard the excess. Muddle the sugar cube with bitters, add whiskey and ice, and stir well. Strain into the prepared glass and garnish with a lemon peel.",
+            "description": "The Sazerac is one of America’s oldest cocktails, rich and aromatic with hints of spice and herbs, offering a smooth, lingering finish."
+        },
+        "4": {
+            "name": "Bloody Mary",
+            "recipe": "Vodka: 1.5 oz\nTomato juice: 3 oz\nLemon juice: 0.5 oz\nWorcestershire sauce, hot sauce, salt, black pepper: to taste\nCelery stick or lemon wedge for garnish",
+            "method": "Roll all ingredients with ice in a shaker (do not shake vigorously). Pour into a highball glass and garnish with a celery stick or lemon wedge.",
+            "description": "The Bloody Mary is savory, spicy, and full-bodied—a brunch staple that perfectly combines vegetable and alcohol flavors."
+        },
+        "5": {
+            "name": "Manhattan",
+            "recipe": "Rye whiskey: 2 oz\nSweet Vermouth: 1 oz\nAngostura bitters: 2 dashes\nCherry for garnish",
+            "method": "Combine whiskey, sweet vermouth, and bitters in a mixing glass with ice. Stir well, then strain into a chilled cocktail glass. Garnish with a cherry.",
+            "description": "The Manhattan is smooth and balanced, with a mix of spice and sweetness—a timeless whiskey-based classic."
+        },
+        "6": {
+            "name": "Americano",
+            "recipe": "Campari: 1 oz\nSweet Vermouth: 1 oz\nSoda water: to top\nOrange or lemon slice",
+            "method": "Pour Campari and sweet vermouth into a highball glass filled with ice. Top with soda water and gently stir. Garnish with an orange or lemon slice.",
+            "description": "The Americano is light, refreshing, and mildly bitter, with a sparkling texture—perfect as an aperitif on a warm day."
+        },
+        "7": {
+            "name": "Espresso Martini",
+            "recipe": "Vodka: 1.5 oz\nCoffee liqueur (e.g., Kahlúa): 1 oz\nFresh espresso: 1 oz\nSimple syrup: 0.25 oz\nCoffee beans for garnish",
+            "method": "Shake all ingredients vigorously with ice, then strain into a chilled martini glass. Garnish with coffee beans.",
+            "description": "The Espresso Martini delivers a smooth, rich mix of coffee and sweetness—a modern favorite for both coffee and cocktail lovers."
+        },
+        "8": {
+            "name": "Cosmopolitan",
+            "recipe": "Vodka: 1.5 oz\nTriple Sec: 1 oz\nCranberry juice: 0.5 oz\nFresh lime juice: 0.25 oz\nOrange peel for garnish",
+            "method": "Shake all ingredients with ice and strain into a chilled martini glass. Garnish with an orange peel.",
+            "description": "The Cosmopolitan is bright, fruity, and slightly tart, known for its elegant pink color and refreshing citrus aroma."
+        },
+        "9": {
+            "name": "Bellini",
+            "recipe": "White peach purée: 2 oz\nProsecco: 4 oz",
+            "method": "Pour white peach purée into a chilled flute glass, then gently top with Prosecco. Stir lightly to combine.",
+            "description": "The Bellini is light, fruity, and refreshing, combining the sweetness of peach with sparkling Prosecco—perfect for brunch or celebrations."
+        },
+        "10": {
+            "name": "Old Fashioned",
+            "recipe": "Bourbon or rye whiskey: 2 oz\nSugar cube: 1\nAngostura bitters: 2 dashes\nWater: a splash\nOrange peel for garnish",
+            "method": "Muddle the sugar cube with bitters and water in an old-fashioned glass. Add whiskey and ice, stir well, and garnish with an orange peel.",
+            "description": "The Old Fashioned is smooth, balanced, and aromatic, highlighting the whiskey’s rich flavor with subtle sweetness and spice."
+        },
+        "11": {
+            "name": "Margarita",
+            "recipe": "Tequila: 2 oz\nTriple Sec: 1 oz\nFresh lime juice: 1 oz\nSalt for rim\nLime wheel for garnish",
+            "method": "Rim a glass with salt. Shake tequila, triple sec, and lime juice with ice, then strain into the glass. Garnish with a lime wheel.",
+            "description": "The Margarita is tangy, refreshing, and perfectly balanced between sweet, sour, and salty—an iconic tequila cocktail."
+        },
+        "12": {
+            "name": "Aperol Spritz",
+            "recipe": "Aperol: 2 oz\nProsecco: 3 oz\nSoda water: 1 oz\nOrange slice for garnish",
+            "method": "Pour Aperol, Prosecco, and soda water into a wine glass filled with ice. Stir gently and garnish with an orange slice.",
+            "description": "The Aperol Spritz is vibrant and bubbly, offering a bittersweet citrus flavor that’s light and refreshing—ideal for summer evenings."
+        },
+        "13": {
+            "name": "Casino",
+            "recipe": "Old Tom Gin: 2 oz\nMaraschino liqueur: 0.25 oz\nOrange bitters: 1 dash\nFresh lemon juice: 0.25 oz\nCherry or lemon twist for garnish",
+            "method": "Shake all ingredients with ice and strain into a chilled cocktail glass. Garnish with a cherry or lemon twist.",
+            "description": "The Casino is a delicate and aromatic gin cocktail with a subtle sweetness and a crisp citrus finish."
+        },
+        "14": {
+            "name": "Clover Club",
+            "recipe": "Gin: 1.5 oz\nFresh lemon juice: 0.5 oz\nRaspberry syrup: 0.5 oz\nEgg white: optional\nRaspberries for garnish",
+            "method": "Shake all ingredients without ice to emulsify, then add ice and shake again. Strain into a chilled cocktail glass and garnish with raspberries.",
+            "description": "The Clover Club is elegant and smooth, featuring a bright pink color and a balance of tart lemon with sweet raspberry."
+        },
+        "15": {
+            "name": "Angel Face",
+            "recipe": "Gin: 1 oz\nCalvados: 1 oz\nApricot brandy: 1 oz",
+            "method": "Shake all ingredients with ice and strain into a chilled cocktail glass.",
+            "description": "The Angel Face offers a warm, fruity flavor from apple brandy and apricot liqueur, balanced by the dryness of gin."
+        },
+        "16": {
+            "name": "Aviation",
+            "recipe": "Gin: 1.5 oz\nMaraschino liqueur: 0.5 oz\nCrème de Violette: 0.25 oz\nFresh lemon juice: 0.5 oz\nCherry or lemon twist for garnish",
+            "method": "Shake all ingredients with ice and strain into a chilled cocktail glass. Garnish with a cherry or lemon twist.",
+            "description": "The Aviation is floral and slightly tart, with a pale violet hue and a unique balance of citrus and cherry flavors."
+        },
+        "17": {
+            "name": "Between the Sheets",
+            "recipe": "Cognac: 1 oz\nWhite rum: 1 oz\nTriple Sec: 0.5 oz\nFresh lemon juice: 0.5 oz",
+            "method": "Shake all ingredients with ice and strain into a chilled cocktail glass.",
+            "description": "Between the Sheets is a smooth and citrusy cocktail that blends rum and cognac for a rich yet refreshing flavor."
+        },
+        "18": {
+            "name": "Cosmopolitan",
+            "recipe": "Vodka: 1.5 oz\nTriple Sec: 1 oz\nCranberry juice: 0.5 oz\nFresh lime juice: 0.25 oz\nOrange peel for garnish",
+            "method": "Shake all ingredients with ice and strain into a chilled martini glass. Garnish with an orange peel.",
+            "description": "The Cosmopolitan is fruity and slightly tart with a beautiful pink hue, offering a perfect balance of citrus and sweetness."
+        },
+        "19": {
+            "name": "Derby",
+            "recipe": "Bourbon: 2 oz\nSweet Vermouth: 0.5 oz\nOrange curaçao: 0.25 oz\nFresh lime juice: 0.25 oz\nBitters: 1 dash\nMint sprig for garnish",
+            "method": "Shake all ingredients with ice and strain into a cocktail glass. Garnish with a mint sprig.",
+            "description": "The Derby is a complex bourbon-based cocktail with herbal and citrus notes, refreshing yet sophisticated."
+        },
+        "20": {
+            "name": "Lemon Drop Martini",
+            "recipe": "Vodka: 2 oz\nTriple Sec: 0.5 oz\nFresh lemon juice: 0.75 oz\nSimple syrup: 0.25 oz\nSugar for rim\nLemon twist for garnish",
+            "method": "Rim a martini glass with sugar. Shake vodka, triple sec, lemon juice, and syrup with ice, then strain into the prepared glass. Garnish with a lemon twist.",
+            "description": "The Lemon Drop Martini is zesty and bright, combining tangy citrus with a hint of sweetness—both elegant and uplifting."
+        },
+        "21": {
+            "name": "Hemingway Special",
+            "recipe": "White rum: 2 oz\nFresh grapefruit juice: 0.75 oz\nMaraschino liqueur: 0.25 oz\nFresh lime juice: 0.5 oz",
+            "method": "Shake all ingredients with ice and strain into a chilled cocktail glass.",
+            "description": "The Hemingway Special is crisp and tart, a rum cocktail with citrus brightness and a light cherry finish, inspired by the famous writer himself."
+        },
+        "22": {
+            "name": "Margarita",
+            "recipe": "Tequila: 2 oz\nTriple Sec: 1 oz\nFresh lime juice: 1 oz\nSalt for rim\nLime wheel for garnish",
+            "method": "Rim a glass with salt. Shake tequila, triple sec, and lime juice with ice, then strain into the glass. Garnish with a lime wheel.",
+            "description": "The Margarita is tangy, refreshing, and perfectly balanced between sweet, sour, and salty—an iconic tequila cocktail."
+        },
+        "23": {
+            "name": "Mary Pickford",
+            "recipe": "White rum: 1.5 oz\nPineapple juice: 1.5 oz\nGrenadine: 0.25 oz\nMaraschino liqueur: 0.25 oz\nCherry for garnish",
+            "method": "Shake all ingredients with ice and strain into a chilled cocktail glass. Garnish with a cherry.",
+            "description": "The Mary Pickford is sweet and tropical, with a pink hue and fruity blend of pineapple and cherry flavors."
+        },
+        "24": {
+            "name": "Kamikaze",
+            "recipe": "Vodka: 1 oz\nTriple Sec: 1 oz\nFresh lime juice: 1 oz\nLime wedge for garnish",
+            "method": "Shake all ingredients with ice and strain into a chilled cocktail glass. Garnish with a lime wedge.",
+            "description": "The Kamikaze is bold and tangy, offering a clean citrus punch with a smooth vodka base—simple yet satisfying."
+        },
+        "25": {
+            "name": "Whiskey Sour",
+            "recipe": "Bourbon: 2 oz\nFresh lemon juice: 0.75 oz\nSimple syrup: 0.75 oz\nEgg white: optional\nCherry or orange slice for garnish",
+            "method": "Shake all ingredients with ice (dry shake first if using egg white), then strain into an old-fashioned glass filled with ice. Garnish with a cherry or orange slice.",
+            "description": "The Whiskey Sour is a perfect balance of sweet and sour, smooth and refreshing, with a rich citrus aroma."
+        },
+        "26": {
+            "name": "Mojito",
+            "recipe": "White rum: 2 oz\nFresh lime juice: 0.75 oz\nSimple syrup: 0.5 oz\nMint leaves: 6–8\nSoda water: to top\nMint sprig for garnish",
+            "method": "Muddle mint leaves with lime juice and syrup in a glass. Add rum and ice, top with soda water, and gently stir. Garnish with a mint sprig.",
+            "description": "The Mojito is light, refreshing, and aromatic, combining citrus, mint, and rum in a bubbly, crisp cocktail."
+        },
+        "27": {
+            "name": "The Flip",
+            "recipe": "Brandy or rum: 1.5 oz\nSimple syrup: 0.25 oz\nWhole egg: 1\nNutmeg for garnish",
+            "method": "Shake all ingredients vigorously without ice, then add ice and shake again. Strain into a chilled cocktail glass and garnish with freshly grated nutmeg.",
+            "description": "The Flip is rich and creamy with a velvety texture, subtly sweet and nutty, perfect as a dessert cocktail."
+        },
+        "28": {
+            "name": "Negroni",
+            "recipe": "Gin: 1 oz\nCampari: 1 oz\nSweet Vermouth: 1 oz\nOrange slice or peel for garnish",
+            "method": "Pour gin, Campari, and sweet vermouth into a mixing glass with ice. Stir well and strain into an old-fashioned glass filled with ice. Garnish with an orange slice or peel.",
+            "description": "The Negroni is bitter-sweet with a layered flavor and a vivid orange-red hue—an all-time classic."
+        },
+        "29": {
+            "name": "Espresso Martini",
+            "recipe": "Vodka: 1.5 oz\nCoffee liqueur: 1 oz\nFresh espresso: 1 oz\nSimple syrup: 0.25 oz\nCoffee beans for garnish",
+            "method": "Shake all ingredients vigorously with ice, then strain into a chilled martini glass. Garnish with coffee beans.",
+            "description": "Rich and smooth, the Espresso Martini blends coffee and sweetness for a modern favorite."
+        },
+        "30": {
+            "name": "Daiquiri",
+            "recipe": "White rum: 2 oz\nFresh lime juice: 1 oz\nSimple syrup: 0.5 oz\nLime wheel for garnish",
+            "method": "Shake all ingredients with ice and strain into a chilled cocktail glass. Garnish with a lime wheel.",
+            "description": "The Daiquiri is crisp, citrusy, and perfectly balanced—a classic rum cocktail that is refreshing and simple."
+        },
+        "31": {
+            "name": "Manhattan",
+            "recipe": "Rye whiskey: 2 oz\nSweet Vermouth: 1 oz\nAngostura bitters: 2 dashes\nCherry for garnish",
+            "method": "Combine whiskey, sweet vermouth, and bitters in a mixing glass with ice. Stir well and strain into a chilled cocktail glass. Garnish with a cherry.",
+            "description": "Smooth and balanced, the Manhattan features a mix of spice and sweetness—a timeless whiskey cocktail."
+        },
+        "32": {
+            "name": "Cosmopolitan",
+            "recipe": "Vodka: 1.5 oz\nTriple Sec: 1 oz\nCranberry juice: 0.5 oz\nFresh lime juice: 0.25 oz\nOrange peel for garnish",
+            "method": "Shake all ingredients with ice and strain into a chilled martini glass. Garnish with an orange peel.",
+            "description": "Bright, fruity, and slightly tart, the Cosmopolitan is elegant with a refreshing citrus aroma."
+        },
+        "33": {
+            "name": "Margarita",
+            "recipe": "Tequila: 2 oz\nTriple Sec: 1 oz\nFresh lime juice: 1 oz\nSalt for rim\nLime wheel for garnish",
+            "method": "Rim a glass with salt. Shake tequila, triple sec, and lime juice with ice, then strain into the glass. Garnish with a lime wheel.",
+            "description": "Tangy, refreshing, and perfectly balanced between sweet, sour, and salty—an iconic tequila cocktail."
+        },
+        "34": {
+            "name": "Blue Curacao Cocktail",
+            "recipe": "Vodka: 1.5 oz\nBlue Curacao: 1 oz\nLemon juice: 0.5 oz\nSimple syrup: 0.25 oz\nLemon slice for garnish",
+            "method": "Shake all ingredients with ice and strain into a chilled cocktail glass. Garnish with a lemon slice.",
+            "description": "Bright blue and visually stunning, with a sweet and citrusy flavor profile."
+        },
+        "35": {
+            "name": "Highball",
+            "recipe": "Whiskey: 2 oz\nGinger ale or soda water: to top\nLemon wedge for garnish",
+            "method": "Fill a highball glass with ice, pour whiskey, top with ginger ale or soda water, and garnish with a lemon wedge.",
+            "description": "Simple, light, and refreshing, highlighting the whiskey with subtle carbonation."
+        },
+        "36": {
+            "name": "Sidecar",
+            "recipe": "Cognac: 2 oz\nTriple Sec: 1 oz\nFresh lemon juice: 0.75 oz\nSugar for rim\nLemon twist for garnish",
+            "method": "Rim the glass with sugar. Shake cognac, triple sec, and lemon juice with ice, strain into the glass. Garnish with a lemon twist.",
+            "description": "Citrusy, slightly sweet, and balanced, a timeless cognac cocktail."
+        },
+        "37": {
+            "name": "Amy and Navy",
+            "recipe": "Gin: 2 oz\nApricot brandy: 0.5 oz\nFresh lemon juice: 0.5 oz\nSugar syrup: 0.25 oz",
+            "method": "Shake all ingredients with ice and strain into a chilled cocktail glass.",
+            "description": "Fruity, tart, and balanced, combining gin’s dryness with apricot sweetness."
+        },
+        "38": {
+            "name": "Aviation",
+            "recipe": "Gin: 1.5 oz\nMaraschino liqueur: 0.5 oz\nCrème de Violette: 0.25 oz\nFresh lemon juice: 0.5 oz\nCherry for garnish",
+            "method": "Shake all ingredients with ice and strain into a chilled cocktail glass. Garnish with a cherry.",
+            "description": "Floral and slightly tart, pale violet in color, with a unique balance of citrus and cherry flavors."
+        },
+        "39": {
+            "name": "Bees Knees",
+            "recipe": "Gin: 2 oz\nFresh lemon juice: 0.75 oz\nHoney syrup: 0.5 oz\nLemon twist for garnish",
+            "method": "Shake all ingredients with ice and strain into a chilled cocktail glass. Garnish with a lemon twist.",
+            "description": "Smooth, citrusy, and lightly sweet, with honey adding a natural richness to the gin base."
+        },
+        "40": {
+            "name": "Paloma",
+            "recipe": "Tequila: 2 oz\nFresh grapefruit juice: 2 oz\nSimple syrup: 0.5 oz\nSoda water: to top\nLime wedge for garnish",
+            "method": "Fill a highball glass with ice, add tequila, grapefruit juice, and syrup. Top with soda water and garnish with a lime wedge.",
+            "description": "Crisp, refreshing, and slightly bitter, a perfect tequila-based cocktail for sunny days."
+        },
+        "41": {
+            "name": "50 50 Martini",
+            "recipe": "Gin: 1.5 oz\nDry Vermouth: 1.5 oz\nLemon twist or olive",
+            "method": "Add gin and dry vermouth into a mixing glass with plenty of ice. Stir until well chilled, then strain into a chilled martini glass. Garnish with a lemon twist or olive.",
+            "description": "The 50/50 Martini is a lighter, more approachable variation of the classic martini, offering a clean and balanced profile that highlights both the gin and dry vermouth."
+        },
+        "42": {
+            "name": "Blood and Sand",
+            "recipe": "Scotch: 0.75 oz\nSweet Vermouth: 0.75 oz\nOrange juice: 0.75 oz\nCherry Heering: 0.75 oz\nOrange peel or cherry",
+            "method": "Add scotch, sweet vermouth, orange juice, and Cherry Heering into a shaker with ice. Shake until well chilled and strain into a coupe or cocktail glass. Garnish with an orange peel or a cherry.",
+            "description": "Blood and Sand is a classic whisky cocktail known for its rich balance of smoky scotch, bright orange, and deep cherry sweetness. Its distinctive orange-red hue and smooth, rounded flavor make it one of the few enduring Scotch-based classics."
+        },
+        "43": {
+            "name": "Black Russian",
+            "recipe": "Vodka: 2 oz\nCoffee liqueur: 1 oz",
+            "method": "Pour vodka and coffee liqueur into an old-fashioned glass filled with ice. Stir gently.",
+            "description": "The Black Russian is a simple yet bold cocktail combining the clean bite of vodka with the deep, sweet bitterness of coffee liqueur."
+        },
+        "44": {
+            "name": "Blackthorn",
+            "recipe": "Irish Whiskey: 2 oz\nDry Vermouth: 1 oz\nBitters: 2 dashes\nLemon twist",
+            "method": "Add whiskey, dry vermouth, and bitters into a mixing glass with ice. Stir until chilled and strain into a coupe glass. Garnish with a lemon twist.",
+            "description": "The Blackthorn is a refined, aromatic cocktail featuring Irish whiskey and dry vermouth, offering a crisp herbal character with a smooth finish."
+        },
+        "45": {
+            "name": "Brainstorm",
+            "recipe": "Irish Whiskey: 2 oz\nDry Vermouth: 0.5 oz\nBenedictine: 0.5 oz\nLemon twist",
+            "method": "Combine whiskey, dry vermouth, and Benedictine in a mixing glass with ice. Stir well and strain into a chilled coupe or martini glass. Garnish with a lemon twist.",
+            "description": "The Brainstorm is a smooth, aromatic cocktail with layered herbal sweetness from Benedictine balanced by the roundness of Irish whiskey."
+        },
+        "46": {
+            "name": "Bramble",
+            "recipe": "Gin: 2 oz\nLemon juice: 1 oz\nSimple syrup: 0.5 oz\nCrème de mûre: 0.5 oz\nFresh blackberry or lemon slice",
+            "method": "Shake gin, lemon juice, and simple syrup with ice. Strain into an old-fashioned glass filled with crushed ice. Drizzle crème de mûre on top and garnish with a blackberry or lemon slice.",
+            "description": "The Bramble is a modern classic featuring bright citrus and sweet blackberry flavors, refreshing and visually striking."
+        },
+        "47": {
+            "name": "Caipirinha",
+            "recipe": "Cachaça: 2 oz\nLime: 1 (cut into wedges)\nSugar: 2 teaspoons",
+            "method": "Muddle lime wedges and sugar in an old-fashioned glass to release the lime juice and oils. Fill the glass with crushed ice, add cachaça, and stir well.",
+            "description": "The Caipirinha is Brazil’s national cocktail, known for its bright lime aroma, raw sugar sweetness, and the rustic, grassy character of cachaça."
+        },
+        "48": {
+            "name": "Clover Club",
+            "recipe": "Gin: 1.5 oz\nLemon juice: 0.75 oz\nRaspberry syrup: 0.5 oz\nEgg white: 1\nFresh raspberry or lemon twist",
+            "method": "Add all ingredients into a shaker without ice and dry-shake to emulsify. Add ice, shake again until well chilled, and strain into a coupe glass. Garnish with a raspberry or lemon twist.",
+            "description": "The Clover Club is a pre-Prohibition classic, featuring a silky texture from egg white and a delicate balance of tart lemon and sweet raspberry."
+        }
+    }
+}
