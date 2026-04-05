@@ -56,7 +56,45 @@ interface Star {
 
 let _clockInterval: number | undefined;
 let _starAnimation: number | undefined;
+let _confettiEndTime = 0;
+let _confettiFadeStart = 0;
 let _stars: Star[] = [];
+
+interface ConfettiParticle {
+  x: number;
+  y: number;
+  velocityX: number;
+  velocityY: number;
+  size: number;
+  rotation: number;
+  rotationSpeed: number;
+  color: string;
+  opacity: number;
+}
+
+let _confetti: ConfettiParticle[] = [];
+
+function createConfetti(width: number, count = 28) {
+  _confetti = [];
+  const colors = ["#e63946", "#f4a261", "#2a9d8f", "#264653", "#e9c46a"];
+  for (let i = 0; i < count; i++) {
+    _confetti.push({
+      x: Math.random() * width,
+      y: -Math.random() * 80,
+      velocityX: Math.random() * 1.4 - 0.7,
+      velocityY: Math.random() * 2 + 2.4,
+      size: Math.random() * 8 + 4,
+      rotation: Math.random() * Math.PI * 2,
+      rotationSpeed: Math.random() * 0.14 + 0.04,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      opacity: 0.85 + Math.random() * 0.15,
+    });
+  }
+  const now = performance.now();
+  _confettiEndTime = now + 2000;
+  _confettiFadeStart = _confettiEndTime - 500;
+}
+
 function createStars(width: number, height: number) {
   const starCount = Math.max(40, Math.floor((width * height) / 14000));
   _stars = [];
@@ -90,10 +128,12 @@ function drawStars(): void {
   ctx.clearRect(0, 0, width, height);
   ctx.shadowColor = "rgba(255,255,255,0.9)";
   ctx.shadowBlur = 6;
+  ctx.globalCompositeOperation = "lighter";
 
   for (const star of _stars) {
     star.phase += star.speed;
-    const flicker = 0.4 + 0.6 * (0.5 + 0.5 * Math.sin(star.phase));
+    const flicker =
+      0.35 + 0.65 * (0.5 + 0.5 * Math.sin(star.phase + now * 0.001));
     const alpha = Math.min(1, star.baseAlpha * flicker);
     ctx.globalAlpha = alpha;
     ctx.fillStyle = "#ffffff";
@@ -101,7 +141,45 @@ function drawStars(): void {
     ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
     ctx.fill();
   }
-  ctx.globalAlpha = 1;
+
+  if (_confetti.length > 0) {
+    const now = performance.now();
+    const fadeFactor =
+      now >= _confettiFadeStart
+        ? Math.max(0, 1 - (now - _confettiFadeStart) / 500)
+        : 1;
+
+    ctx.globalCompositeOperation = "source-over";
+    for (const confetto of _confetti) {
+      confetto.x += confetto.velocityX;
+      confetto.y += confetto.velocityY;
+      confetto.rotation += confetto.rotationSpeed;
+      if (confetto.y > height + confetto.size) {
+        confetto.y = -confetto.size;
+        confetto.x = Math.random() * width;
+      }
+
+      ctx.save();
+      ctx.translate(confetto.x, confetto.y);
+      ctx.rotate(confetto.rotation);
+      ctx.globalAlpha = confetto.opacity * fadeFactor;
+      ctx.fillStyle = confetto.color;
+      ctx.fillRect(
+        -confetto.size / 2,
+        -confetto.size / 2,
+        confetto.size,
+        confetto.size * 0.35,
+      );
+      ctx.restore();
+    }
+    ctx.globalAlpha = 1;
+
+    if (now >= _confettiEndTime + 500) {
+      _confetti = [];
+    }
+  }
+
+  ctx.globalCompositeOperation = "source-over";
 }
 
 function animateStars(): void {
@@ -217,25 +295,33 @@ function animateDrinkChange(id: string): void {
   drinkImg.addEventListener("transitionend", finishOut, { once: true });
 }
 
-function setRandomDrink(): void {
+function setRandomDrink(triggerConfetti = false): void {
   const keys = Object.keys(drinks);
   if (keys.length === 0) {
     return;
   }
   const id = keys[Math.floor(Math.random() * keys.length)];
   animateDrinkChange(id);
+  if (triggerConfetti) {
+    const canvas = document.getElementById(
+      "foregroundEffectCanvas",
+    ) as HTMLCanvasElement;
+    if (canvas) {
+      createConfetti(canvas.width, 28);
+    }
+  }
 }
 
 function handlePanelMessage(message: PanelMessage): void {
   if (message.command === "init-drinks") {
     drinks = message.drinks;
     drinkBaseUri = message.drinkBaseUri;
-    setRandomDrink();
+    setRandomDrink(false);
     return;
   }
 
   if (message.command === "random-drink") {
-    setRandomDrink();
+    setRandomDrink(true);
     return;
   }
 
