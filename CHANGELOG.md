@@ -2,6 +2,10 @@
 
 All notable changes to the "vscode-cocktail" extension will be documented in this file.
 
+## [1.0.4]
+
+- chore!: downgrade VS Code version to 1.70.0
+
 ## [1.0.3]
 
 - fix: cocktail 27~32 detail is wrong
