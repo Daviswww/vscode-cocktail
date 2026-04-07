@@ -3,9 +3,9 @@
   "displayName": "vscode-cocktail",
   "description": "A lightweight VS Code extension that turns your editor into a mini cocktail bar.",
   "publisher": "DavisHo",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "engines": {
-    "vscode": "^1.110.0"
+    "vscode": "^1.70.0"
   },
   "icon": "media/icon/logo.png",
   "repository": {
@@ -104,7 +104,7 @@
   },
   "devDependencies": {
     "@types/node": "22.x",
-    "@types/vscode": "^1.110.0",
+    "@types/vscode": "^1.70.0",
     "@vscode/test-cli": "^0.0.12",
     "@vscode/test-electron": "^2.5.2",
     "eslint": "^9.39.3",
