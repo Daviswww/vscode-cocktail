@@ -132,6 +132,51 @@ function ensureConfettiContainer(): HTMLDivElement | null {
   return container;
 }
 
+function initializeBartender(): void {
+  const img = document.getElementById("bartender") as HTMLImageElement | null;
+  if (!img) {
+    return;
+  }
+
+  const walkSrc = img.dataset.walk ?? img.src;
+  const waitSrc = img.dataset.wait ?? img.src;
+  const container = document.getElementById("cocktailCanvasContainer");
+  if (!container) {
+    return;
+  }
+
+  let direction = 1;
+  const waitTime = 1200;
+  const startMovement = () => {
+    if (!img || !container) {
+      return;
+    }
+
+    const containerWidth = container.clientWidth;
+    const imgWidth = img.clientWidth || 120;
+    const targetX =
+      direction === 1 ? Math.max(0, containerWidth - imgWidth - 24) : 0;
+
+    img.src = walkSrc;
+    img.style.transform = `translate3d(${targetX}px, 0, 0)`;
+
+    const onTransitionEnd = () => {
+      img.removeEventListener("transitionend", onTransitionEnd);
+      img.src = waitSrc;
+      direction *= -1;
+      window.setTimeout(startMovement, waitTime);
+    };
+
+    img.addEventListener("transitionend", onTransitionEnd, { once: true });
+  };
+
+  if (img.complete && img.naturalWidth > 0) {
+    startMovement();
+  } else {
+    img.addEventListener("load", startMovement, { once: true });
+  }
+}
+
 function createConfettiPiece(): HTMLDivElement {
   const piece = document.createElement("div");
   piece.className = "confetti-piece";
@@ -279,6 +324,7 @@ function notifyExtensionReady(): void {
 
 function setupPanel(): void {
   notifyExtensionReady();
+  initializeBartender();
   window.addEventListener("keydown", handleKeyDown);
 }
 
