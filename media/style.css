@@ -48,7 +48,7 @@ body {
   pointer-events: none;
   background-repeat: repeat-x;
   background-position: left bottom;
-  background-size: 300px auto;
+  background-size: 150px auto;
 }
 
 #backgroundImage {
@@ -57,9 +57,9 @@ body {
 
 #bartender {
   position: absolute;
-  bottom: 50px;
+  bottom: 25px;
   left: 0;
-  width: 120px;
+  width: 60px;
   height: auto;
   z-index: 1;
   pointer-events: none;
@@ -100,7 +100,7 @@ body {
 .drink-panel {
   position: absolute;
   left: 20px;
-  bottom: 80px;
+  bottom: 40px;
   width: 50%;
   max-width: 50%;
   display: flex;
@@ -115,7 +115,7 @@ body {
   position: relative;
   flex: 0 0 70%;
   display: block;
-  width: 60px;
+  width: 40px;
   height: 100%;
   margin: 0 auto;
   z-index: 4;
