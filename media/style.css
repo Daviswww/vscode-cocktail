@@ -197,8 +197,8 @@ body {
 
 .recipe-panel {
   position: absolute;
-  right: 20px;
-  top: 20px;
+  right: 8px;
+  top: 8px;
   width: 130px;
   padding: 8px;
   background: rgba(0, 0, 0, 0.45);
