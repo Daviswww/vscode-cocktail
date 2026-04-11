@@ -47,4 +47,56 @@ suite("Extension Language Configuration", () => {
       );
     }
   });
+
+  test("showFlavorMessage displays drink flavor with prefix", async () => {
+    const extensionRoot = path.join(__dirname, "..", "..");
+    const extensionUri = vscode.Uri.file(extensionRoot);
+    const provider = new CocktailViewProvider(extensionUri) as any;
+
+    provider._currentDrinkName = "Negroni";
+    provider._currentDrinkDescription = "A bittersweet Italian classic.";
+
+    const original = (vscode.window as any).showInformationMessage;
+    let messageShown = "";
+    (vscode.window as any).showInformationMessage = (message: string) => {
+      messageShown = message;
+      return Promise.resolve(undefined);
+    };
+
+    try {
+      provider.showFlavorMessage();
+      assert.strictEqual(
+        messageShown,
+        "Negroni: A bittersweet Italian classic.",
+      );
+    } finally {
+      (vscode.window as any).showInformationMessage = original;
+    }
+  });
+
+  test("showMethodMessage displays drink method with prefix", async () => {
+    const extensionRoot = path.join(__dirname, "..", "..");
+    const extensionUri = vscode.Uri.file(extensionRoot);
+    const provider = new CocktailViewProvider(extensionUri) as any;
+
+    provider._currentDrinkName = "Old Fashioned";
+    provider._currentDrinkMethod = "Stir with ice and strain.";
+
+    const original = (vscode.window as any).showInformationMessage;
+    let messageShown = "";
+    (vscode.window as any).showInformationMessage = (message: string) => {
+      messageShown = message;
+      return Promise.resolve(undefined);
+    };
+
+    try {
+      provider.showMethodMessage();
+      assert.strictEqual(
+        messageShown,
+        "Old Fashioned: Stir with ice and strain.",
+      );
+    } finally {
+      (vscode.window as any).showInformationMessage = original;
+    }
+  });
 });

@@ -52,6 +52,21 @@ export class CocktailViewProvider implements vscode.WebviewViewProvider {
     }
   }
 
+  public showFlavorMessage() {
+    if (this._currentDrinkDescription) {
+      const prefix = this._currentDrinkName
+        ? `${this._currentDrinkName}: `
+        : "";
+      vscode.window.showInformationMessage(
+        `${prefix}${this._currentDrinkDescription}`,
+      );
+    } else {
+      vscode.window.showInformationMessage(
+        "No cocktail selected yet. Open the Cocktail view and choose a drink first.",
+      );
+    }
+  }
+
   public showMethodMessage() {
     if (this._currentDrinkMethod) {
       const prefix = this._currentDrinkName
@@ -287,17 +302,10 @@ export function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
     vscode.commands.registerCommand("vscode-cocktail.showFlavorMessage", () => {
-      if (clockProvider._currentDrinkDescription) {
-        const prefix = clockProvider._currentDrinkName
-          ? `${clockProvider._currentDrinkName}: `
-          : "";
-        vscode.window.showInformationMessage(
-          `${prefix}${clockProvider._currentDrinkDescription}`,
-        );
-      } else {
-        vscode.window.showInformationMessage(
-          "No cocktail selected yet. Open the Cocktail view and choose a drink first.",
-        );
+      try {
+        clockProvider.showFlavorMessage();
+      } catch (err) {
+        vscode.window.showErrorMessage(String(err));
       }
     }),
   );
