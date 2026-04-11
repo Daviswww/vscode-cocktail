@@ -99,7 +99,7 @@ body {
 
 .drink-panel {
   position: absolute;
-  left: 30px;
+  left: 20px;
   bottom: 25px;
   width: 50%;
   max-width: 50%;
@@ -161,9 +161,10 @@ body {
 }
 
 .recipe-panel {
-  position: relative;
-  width: 50%;
-  max-width: 260px;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  width: 130px;
   padding: 16px;
   background: rgba(0, 0, 0, 0.45);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -202,7 +203,7 @@ body {
 }
 
 .recipe-header {
-  font-size: 14px;
+  font-size: 10px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #e8f6ff;
@@ -212,7 +213,7 @@ body {
 .recipe-text {
   white-space: pre-wrap;
   line-height: 1.4;
-  font-size: 12px;
+  font-size: 8px;
   color: #e8f6ff;
 }
 
