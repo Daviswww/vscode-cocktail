@@ -39,21 +39,50 @@ body {
   height: 100%;
 }
 
-#cocktailCanvasContainer canvas {
+#cocktailCanvasContainer > div {
   position: absolute;
   inset: 0;
   display: block;
   width: 100%;
   height: 100%;
   pointer-events: none;
+  background-repeat: repeat-x;
+  background-position: left bottom;
+  background-size: 100% auto;
 }
 
-#backgroundEffectCanvas {
+#backgroundImage {
+  z-index: 0;
+}
+
+#foregroundImage {
   z-index: 1;
 }
 
-#foregroundEffectCanvas {
-  z-index: 2;
+#confettiContainer {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.confetti-piece {
+  position: absolute;
+  border-radius: 2px;
+  will-change: transform, opacity;
+}
+
+@keyframes confettiFall {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(var(--confetti-rotate));
+  }
+  to {
+    transform: translate3d(var(--confetti-dx), var(--confetti-dy), 0)
+      rotate(calc(var(--confetti-rotate) + 360deg));
+    opacity: 0;
+  }
 }
 
 .drink-panel {

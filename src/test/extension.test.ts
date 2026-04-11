@@ -62,8 +62,6 @@ suite("Panel Main setRandomDrink Test Suite", () => {
       return canvas;
     }
 
-    elements.backgroundEffectCanvas = createCanvas("backgroundEffectCanvas");
-    elements.foregroundEffectCanvas = createCanvas("foregroundEffectCanvas");
     elements.drinkName = { textContent: "" };
     elements.drinkRecipe = { innerHTML: "" };
     elements.keyProgressFill = { style: { width: "" } };
