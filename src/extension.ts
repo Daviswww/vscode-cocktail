@@ -181,8 +181,11 @@ export class CocktailViewProvider implements vscode.WebviewViewProvider {
     const backgroundUri = webview.asWebviewUri(
       vscode.Uri.joinPath(this._extensionUri, "media", "images", "bg.png"),
     );
+    const wallUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(this._extensionUri, "media", "images", "bg_wall.png"),
+    );
     const foregroundUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "media", "images", "fg2.png"),
+      vscode.Uri.joinPath(this._extensionUri, "media", "images", "fg.png"),
     );
     const bartenderWalkUri = webview.asWebviewUri(
       vscode.Uri.joinPath(
@@ -214,6 +217,7 @@ export class CocktailViewProvider implements vscode.WebviewViewProvider {
       <body>
         <div id="cocktailScene">
           <div id="cocktailCanvasContainer">
+            <div id="wallImage" style="background-image: url('${wallUri}');"></div>
             <div id="backgroundImage" style="background-image: url('${backgroundUri}');"></div>
             <img
               id="bartender"

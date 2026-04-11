@@ -46,13 +46,32 @@ body {
   width: 100%;
   height: 100%;
   pointer-events: none;
+}
+
+#cocktailCanvasContainer > div:not(#wallImage) {
   background-repeat: repeat-x;
   background-position: left bottom;
   background-size: 150px auto;
 }
 
-#backgroundImage {
+#wallImage {
+  position: absolute;
   z-index: 0;
+  background-repeat: repeat;
+  background-position: left bottom;
+  background-size: 50px 50px;
+}
+
+#wallImage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+}
+
+#backgroundImage {
+  z-index: 1;
 }
 
 #bartender {
