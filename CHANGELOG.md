@@ -2,6 +2,11 @@
 
 All notable changes to the "vscode-cocktail" extension will be documented in this file.
 
+## [1.1.2]
+
+- Adjusted drink display size in the cocktail view
+- Added wall image to the cocktail view background
+
 ## [1.1.1]
 
 - Added flavor text display in the cocktail view
