@@ -35,6 +35,14 @@ npm test
 2. Press `F5` to launch the Extension Development Host.
 3. Open the `Cocktail` view in the sidebar and verify the extension behavior.
 
+### 2.4 Packaging
+
+To create a VSIX package for testing or distribution, run:
+
+```bash
+vsce package
+```
+
 ## 3. Pre-PR checklist
 
 Before opening a pull request, please ensure:
