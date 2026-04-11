@@ -184,7 +184,7 @@ body {
   opacity: 1;
 }
 
-.drink-name {
+.recipe-header {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -235,14 +235,6 @@ body {
 
 .recipe-panel-change-in {
   opacity: 1;
-}
-
-.recipe-header {
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #e8f6ff;
-  margin-bottom: 10px;
 }
 
 .recipe-text {

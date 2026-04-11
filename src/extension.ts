@@ -231,7 +231,7 @@ export class CocktailViewProvider implements vscode.WebviewViewProvider {
               </div>
             </div>
             <div class="recipe-panel">
-              <div class="drink-name" id="drinkName">Cocktail</div>
+              <div class="recipe-header" id="drinkName">Cocktail</div>
               <div class="recipe-text" id="drinkRecipe">Loading...</div>
             </div>
           </div>
