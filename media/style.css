@@ -79,6 +79,44 @@ body {
   overflow: hidden;
 }
 
+.flavor-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 34px;
+  background: rgba(0, 0, 0, 0.55);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.flavor-marquee {
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+}
+
+.flavor-marquee span {
+  display: inline-block;
+  padding-left: 100%;
+  animation: flavorScroll 16s linear infinite;
+  color: #f8f3cf;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+
+@keyframes flavorScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
 .confetti-piece {
   position: absolute;
   border-radius: 2px;

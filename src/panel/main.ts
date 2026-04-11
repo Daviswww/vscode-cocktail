@@ -47,6 +47,11 @@ function updateDrinkDisplay(id: string): void {
   if (recipeEl) {
     recipeEl.innerHTML = drink.recipe.replace(/\n/g, "<br />");
   }
+
+  const flavorEl = getElement<HTMLSpanElement>("flavorText");
+  if (flavorEl) {
+    flavorEl.textContent = drink.description || "No flavor details available.";
+  }
 }
 
 let _drinkAnimating = false;
@@ -86,6 +91,11 @@ function animateDrinkChange(id: string): void {
     }
     if (recipeEl) {
       recipeEl.innerHTML = drink.recipe.replace(/\n/g, "<br />");
+    }
+    const flavorEl = getElement<HTMLSpanElement>("flavorText");
+    if (flavorEl) {
+      flavorEl.textContent =
+        drink.description || "No flavor details available.";
     }
 
     drinkImg.classList.add("drink-change-in");

@@ -223,6 +223,11 @@ export class CocktailViewProvider implements vscode.WebviewViewProvider {
           <div class="key-progress">
             <div class="key-progress-fill" id="keyProgressFill"></div>
           </div>
+          <div class="flavor-bar">
+            <div class="flavor-marquee">
+              <span id="flavorText">Flavor text will appear here.</span>
+            </div>
+          </div>
         </div>
         <script src="${scriptUri}"></script>
       </body>
