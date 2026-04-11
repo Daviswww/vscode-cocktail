@@ -48,7 +48,7 @@ body {
   pointer-events: none;
   background-repeat: repeat-x;
   background-position: left bottom;
-  background-size: 100% auto;
+  background-size: 300px auto;
 }
 
 #backgroundImage {
