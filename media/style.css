@@ -98,7 +98,9 @@ body {
 }
 
 .drink-panel {
-  position: relative;
+  position: absolute;
+  left: 30px;
+  bottom: 25px;
   width: 50%;
   max-width: 50%;
   display: flex;
