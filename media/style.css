@@ -137,25 +137,22 @@ body {
 
 .drink-panel {
   position: absolute;
-  left: 20px;
+  left: 30px;
   bottom: 40px;
-  width: 50%;
-  max-width: 50%;
+  width: auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  align-items: center;
-  text-align: center;
   height: 180px;
+  align-items: flex-start;
 }
 
 .drink-wrapper {
   position: relative;
-  flex: 0 0 70%;
   display: block;
   width: 40px;
   height: 100%;
-  margin: 0 auto;
+  margin: 0;
   z-index: 4;
   perspective: 400px;
 }
