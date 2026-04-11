@@ -3,11 +3,12 @@
   <img src="https://img.shields.io/github/actions/workflow/status/Daviswww/vscode-cocktail/ci.yml?branch=master&style=flat-square" alt="ci" />
   <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="license" />
 
-  # VS Code Cocktail
+# VS Code Cocktail
 
-  A lightweight VS Code extension that turns your editor into a mini cocktail bar.
+Turns your editor into a mini cocktail bar.
 
-  ![VS Code Cocktail](./docs/source/VSCodeCocktailView.gif)
+![VS Code Cocktail](./docs/source/VSCodeCocktailView.gif)
+
 </div>
 
 ## Table of Contents
