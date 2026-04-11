@@ -1,0 +1,45 @@
+name: Create GitHub Release
+
+permissions:
+  contents: write
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    name: Create release from tag
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract release notes from CHANGELOG
+        id: changelog
+        run: |
+          version="${GITHUB_REF##*/}"
+          awk \
+            '/^## \['version'\]/ {flag=1; next} /^## \[/ && flag {exit} flag' \
+            CHANGELOG.md > release_notes.txt
+          if [ ! -s release_notes.txt ]; then
+            echo "No changelog section found for ${version}, using default release notes."
+            echo "release_notes=Release ${version}" >> $GITHUB_OUTPUT
+          else
+            echo "release_notes<<EOF" >> $GITHUB_OUTPUT
+            cat release_notes.txt >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: ${{ github.ref_name }}
+          body: ${{ steps.changelog.outputs.release_notes }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
