@@ -2,7 +2,7 @@
 
 A lightweight VS Code extension that turns your editor into a mini cocktail bar.
 
-![VS Code Cocktail](./docs/source/VSCodeCocktailView.png)
+![VS Code Cocktail](./docs/source/VSCodeCocktailView.gif)
 
 ## Table of Contents
 
