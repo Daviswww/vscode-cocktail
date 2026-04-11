@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://img.shields.io/badge/version-1.1.1-blue?style=flat-square" alt="version" />
+  <img src="https://img.shields.io/github/v/release/Daviswww/vscode-cocktail?style=flat-square" alt="version" />
   <img src="https://img.shields.io/github/actions/workflow/status/Daviswww/vscode-cocktail/ci.yml?branch=master&style=flat-square" alt="ci" />
   <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="license" />
 
