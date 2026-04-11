@@ -62,10 +62,9 @@ suite("Panel Main setRandomDrink Test Suite", () => {
       return canvas;
     }
 
-    elements.backgroundEffectCanvas = createCanvas("backgroundEffectCanvas");
-    elements.foregroundEffectCanvas = createCanvas("foregroundEffectCanvas");
     elements.drinkName = { textContent: "" };
     elements.drinkRecipe = { innerHTML: "" };
+    elements.flavorText = { textContent: "" };
     elements.keyProgressFill = { style: { width: "" } };
 
     const win: any = {
@@ -180,6 +179,44 @@ suite("Panel Main setRandomDrink Test Suite", () => {
     assert.strictEqual(
       env.elements.drinkRecipe.innerHTML,
       "Rum<br />Mint<br />Lime",
+    );
+    assert.strictEqual(
+      env.elements.flavorText.textContent,
+      "A refreshing mint cocktail",
+    );
+  });
+
+  test("random-drink updates flavorText on selection", () => {
+    const env = setupDomEnv();
+    clearModuleCache();
+    require("../panel/main");
+    env.triggerDocumentEvent("DOMContentLoaded");
+
+    const drinks = {
+      paloma: {
+        name: "Paloma",
+        recipe: "Tequila\nGrapefruit soda\nLime",
+        description: "A bright and fizzy tequila cocktail",
+        method: "Build over ice and stir",
+      },
+    };
+
+    env.triggerWindowEvent("message", {
+      data: {
+        command: "init-drinks",
+        drinks,
+        drinkBaseUri: "/images",
+      },
+    });
+
+    env.postMessages.length = 0;
+    env.triggerWindowEvent("message", { data: { command: "random-drink" } });
+
+    assert.strictEqual(env.postMessages.length, 1);
+    assert.strictEqual(env.postMessages[0].command, "current-drink");
+    assert.strictEqual(
+      env.elements.flavorText.textContent,
+      "A bright and fizzy tequila cocktail",
     );
   });
 

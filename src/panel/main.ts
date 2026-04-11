@@ -1,191 +1,3 @@
-function initCanvas(
-  name: string,
-  drawBackground = false,
-): HTMLCanvasElement | null {
-  const canvas = document.getElementById(name) as HTMLCanvasElement;
-  if (!canvas) {
-    console.log("Canvas not ready");
-    return null;
-  }
-  const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-  if (!ctx) {
-    console.log("Canvas context not ready");
-    return null;
-  }
-  // Prefer the canvas's layout size so drawing matches display size
-  const rect = canvas.getBoundingClientRect();
-  const container = canvas.parentElement ?? canvas;
-  const width = rect.width || container.clientWidth || window.innerWidth;
-  const height = rect.height || container.clientHeight || window.innerHeight;
-  // If layout hasn't settled yet, try again on next frame
-  if (width === 0 || height === 0) {
-    requestAnimationFrame(() => initCanvas(name, drawBackground));
-    return canvas;
-  }
-  canvas.style.display = "block";
-  canvas.style.width = "100%";
-  canvas.style.height = "100%";
-  const ratio = window.devicePixelRatio || 1;
-  ctx.canvas.width = Math.max(1, Math.floor(width * ratio));
-  ctx.canvas.height = Math.max(1, Math.floor(height * ratio));
-  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-
-  if (drawBackground) {
-    const grad = ctx.createLinearGradient(0, 0, 0, height);
-    grad.addColorStop(0, "#1f1f38");
-    grad.addColorStop(0.4, "#4b2f3c");
-    grad.addColorStop(0.7, "#8c4a27");
-    grad.addColorStop(1, "#e09d3c");
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, width, height);
-  } else {
-    ctx.clearRect(0, 0, width, height);
-  }
-
-  return canvas;
-}
-
-interface Star {
-  x: number;
-  y: number;
-  radius: number;
-  baseAlpha: number;
-  phase: number;
-  speed: number;
-}
-
-let _clockInterval: number | undefined;
-let _starAnimation: number | undefined;
-let _confettiEndTime = 0;
-let _confettiFadeStart = 0;
-let _stars: Star[] = [];
-
-interface ConfettiParticle {
-  x: number;
-  y: number;
-  velocityX: number;
-  velocityY: number;
-  size: number;
-  rotation: number;
-  rotationSpeed: number;
-  color: string;
-  opacity: number;
-}
-
-let _confetti: ConfettiParticle[] = [];
-
-function createConfetti(width: number, count = 28) {
-  _confetti = [];
-  const colors = ["#e63946", "#f4a261", "#2a9d8f", "#264653", "#e9c46a"];
-  for (let i = 0; i < count; i++) {
-    _confetti.push({
-      x: Math.random() * width,
-      y: -Math.random() * 80,
-      velocityX: Math.random() * 1.4 - 0.7,
-      velocityY: Math.random() * 2 + 2.4,
-      size: Math.random() * 8 + 4,
-      rotation: Math.random() * Math.PI * 2,
-      rotationSpeed: Math.random() * 0.14 + 0.04,
-      color: colors[Math.floor(Math.random() * colors.length)],
-      opacity: 0.85 + Math.random() * 0.15,
-    });
-  }
-  const now = performance.now();
-  _confettiEndTime = now + 2000;
-  _confettiFadeStart = _confettiEndTime - 500;
-}
-
-function createStars(width: number, height: number) {
-  const starCount = Math.max(40, Math.floor((width * height) / 14000));
-  _stars = [];
-  for (let i = 0; i < starCount; i++) {
-    const x = Math.random() * width;
-    const y = Math.random() * height;
-    _stars.push({
-      x,
-      y,
-      radius: Math.random() * 1.5 + 0.5,
-      baseAlpha: Math.random() * 0.4 + 0.3,
-      phase: Math.random() * Math.PI * 2,
-      speed: Math.random() * 0.01 + 0.003,
-    });
-  }
-}
-
-function drawStars(): void {
-  const canvas = document.getElementById(
-    "foregroundEffectCanvas",
-  ) as HTMLCanvasElement;
-  const ctx = canvas?.getContext("2d") as CanvasRenderingContext2D | null;
-  if (!canvas || !ctx) {
-    return;
-  }
-
-  const width = canvas.width;
-  const height = canvas.height;
-  const now = performance.now();
-
-  ctx.clearRect(0, 0, width, height);
-  ctx.shadowColor = "rgba(255,255,255,0.9)";
-  ctx.shadowBlur = 6;
-  ctx.globalCompositeOperation = "lighter";
-
-  for (const star of _stars) {
-    star.phase += star.speed;
-    const flicker =
-      0.35 + 0.65 * (0.5 + 0.5 * Math.sin(star.phase + now * 0.001));
-    const alpha = Math.min(1, star.baseAlpha * flicker);
-    ctx.globalAlpha = alpha;
-    ctx.fillStyle = "#ffffff";
-    ctx.beginPath();
-    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-    ctx.fill();
-  }
-
-  if (_confetti.length > 0) {
-    const now = performance.now();
-    const fadeFactor =
-      now >= _confettiFadeStart
-        ? Math.max(0, 1 - (now - _confettiFadeStart) / 500)
-        : 1;
-
-    ctx.globalCompositeOperation = "source-over";
-    for (const confetto of _confetti) {
-      confetto.x += confetto.velocityX;
-      confetto.y += confetto.velocityY;
-      confetto.rotation += confetto.rotationSpeed;
-      if (confetto.y > height + confetto.size) {
-        confetto.y = -confetto.size;
-        confetto.x = Math.random() * width;
-      }
-
-      ctx.save();
-      ctx.translate(confetto.x, confetto.y);
-      ctx.rotate(confetto.rotation);
-      ctx.globalAlpha = confetto.opacity * fadeFactor;
-      ctx.fillStyle = confetto.color;
-      ctx.fillRect(
-        -confetto.size / 2,
-        -confetto.size / 2,
-        confetto.size,
-        confetto.size * 0.35,
-      );
-      ctx.restore();
-    }
-    ctx.globalAlpha = 1;
-
-    if (now >= _confettiEndTime + 500) {
-      _confetti = [];
-    }
-  }
-
-  ctx.globalCompositeOperation = "source-over";
-}
-
-function animateStars(): void {
-  drawStars();
-  _starAnimation = window.requestAnimationFrame(animateStars);
-}
 interface DrinkItem {
   name: string;
   recipe: string;
@@ -235,6 +47,11 @@ function updateDrinkDisplay(id: string): void {
   if (recipeEl) {
     recipeEl.innerHTML = drink.recipe.replace(/\n/g, "<br />");
   }
+
+  const flavorEl = getElement<HTMLSpanElement>("flavorText");
+  if (flavorEl) {
+    flavorEl.textContent = drink.description || "No flavor details available.";
+  }
 }
 
 let _drinkAnimating = false;
@@ -275,6 +92,11 @@ function animateDrinkChange(id: string): void {
     if (recipeEl) {
       recipeEl.innerHTML = drink.recipe.replace(/\n/g, "<br />");
     }
+    const flavorEl = getElement<HTMLSpanElement>("flavorText");
+    if (flavorEl) {
+      flavorEl.textContent =
+        drink.description || "No flavor details available.";
+    }
 
     drinkImg.classList.add("drink-change-in");
     recipePanel.classList.add("recipe-panel-change-in");
@@ -295,20 +117,192 @@ function animateDrinkChange(id: string): void {
   drinkImg.addEventListener("transitionend", finishOut, { once: true });
 }
 
-function setRandomDrink(triggerConfetti = false): void {
+const confettiColors = [
+  "#e63946",
+  "#f4a261",
+  "#2a9d8f",
+  "#264653",
+  "#e9c46a",
+  "#8d99ae",
+  "#ffbe0b",
+];
+
+function ensureConfettiContainer(): HTMLDivElement | null {
+  const existing = document.getElementById("confettiContainer");
+  if (existing) {
+    return existing as HTMLDivElement;
+  }
+  const parent = document.getElementById("cocktailCanvasContainer");
+  if (!parent) {
+    return null;
+  }
+  const container = document.createElement("div");
+  container.id = "confettiContainer";
+  parent.appendChild(container);
+  return container;
+}
+
+function initializeBartender(): void {
+  const img = document.getElementById("bartender") as HTMLImageElement | null;
+  if (!img) {
+    return;
+  }
+
+  const walkSrc = img.dataset.walk ?? img.src;
+  const waitSrc = img.dataset.wait ?? img.src;
+  const container = document.getElementById("cocktailCanvasContainer");
+  if (!container) {
+    return;
+  }
+
+  let direction = 1;
+  let currentX = 0;
+  const modeIntervalMs = 1500;
+
+  const getRandomBetween = (min: number, max: number) =>
+    Math.floor(Math.random() * (max - min + 1)) + min;
+
+  const clamp = (value: number, min: number, max: number) =>
+    Math.min(max, Math.max(min, value));
+
+  const getBounds = () => {
+    const containerWidth = container.clientWidth;
+    const imgWidth = img.clientWidth || 120;
+    const minX = 0;
+    const maxX = Math.max(0, containerWidth - imgWidth - 24);
+    return { minX, maxX };
+  };
+
+  const setPosition = (x: number, duration = 1200) => {
+    const { minX, maxX } = getBounds();
+    currentX = clamp(x, minX, maxX);
+    img.style.transition = `transform ${duration}ms linear`;
+    img.style.transform = `translate3d(${currentX}px, 0, 0) scaleX(${direction})`;
+  };
+
+  let modeTimer: number | undefined;
+  const clearModeTimer = () => {
+    if (modeTimer !== undefined) {
+      window.clearTimeout(modeTimer);
+      modeTimer = undefined;
+    }
+  };
+
+  const scheduleNextMode = () => {
+    clearModeTimer();
+    modeTimer = window.setTimeout(runMode, modeIntervalMs);
+  };
+
+  const runMode = () => {
+    if (!img || !container) {
+      return;
+    }
+
+    const { minX, maxX } = getBounds();
+    const mode = Math.random() < 0.45 ? "wait" : "walk";
+
+    if (mode === "wait") {
+      img.src = waitSrc;
+      scheduleNextMode();
+      return;
+    }
+
+    img.src = walkSrc;
+    const step = getRandomBetween(80, 180);
+    let target = currentX + direction * step;
+
+    if (target < minX || target > maxX) {
+      direction *= -1;
+      img.style.transition = "none";
+      img.style.transform = `translate3d(${currentX}px, 0, 0) scaleX(${direction})`;
+      img.getBoundingClientRect();
+      target = clamp(currentX + direction * step, minX, maxX);
+    }
+
+    setPosition(target);
+    scheduleNextMode();
+  };
+
+  const startBartender = () => {
+    const { minX } = getBounds();
+    currentX = minX;
+    img.style.transition = "none";
+    img.style.transform = `translate3d(${currentX}px, 0, 0) scaleX(${direction})`;
+    img.src = waitSrc;
+    scheduleNextMode();
+  };
+
+  if (img.complete && img.naturalWidth > 0) {
+    startBartender();
+  } else {
+    img.addEventListener("load", startBartender, { once: true });
+  }
+}
+
+function createConfettiPiece(): HTMLDivElement {
+  const piece = document.createElement("div");
+  piece.className = "confetti-piece";
+  const size = Math.floor(Math.random() * 12) + 8;
+  const drift = Math.floor(Math.random() * 180) - 90;
+  const fall = Math.floor(Math.random() * 260) + 260;
+  const rotate = Math.floor(Math.random() * 360);
+  const duration = Math.random() * 0.5 + 1.4;
+  const delay = Math.random() * 0.6;
+
+  piece.style.width = `${size}px`;
+  piece.style.height = `${Math.max(4, Math.floor(size * 0.35))}px`;
+  piece.style.left = `${Math.random() * 100}%`;
+  piece.style.top = `-18px`;
+  piece.style.backgroundColor =
+    confettiColors[Math.floor(Math.random() * confettiColors.length)];
+  piece.style.opacity = `${0.8 + Math.random() * 0.2}`;
+  piece.style.transform = `rotate(${rotate}deg)`;
+  piece.style.animation = `confettiFall ${duration}s ease-out ${delay}s forwards`;
+  piece.style.setProperty("--confetti-dx", `${drift}px`);
+  piece.style.setProperty("--confetti-dy", `${fall}px`);
+  piece.style.setProperty("--confetti-rotate", `${rotate}deg`);
+  return piece;
+}
+
+function triggerConfetti(total = 80): void {
+  const container = ensureConfettiContainer();
+  if (!container) {
+    return;
+  }
+
+  const piecesPerFrame = 8;
+  const durationMs = 1500;
+  const start = performance.now();
+
+  const spawnBatch = () => {
+    const now = performance.now();
+    if (now - start >= durationMs) {
+      return;
+    }
+
+    for (let i = 0; i < piecesPerFrame; i++) {
+      const piece = createConfettiPiece();
+      piece.addEventListener("animationend", () => {
+        piece.remove();
+      });
+      container.appendChild(piece);
+    }
+
+    window.setTimeout(spawnBatch, 100);
+  };
+
+  spawnBatch();
+}
+
+function setRandomDrink(enableConfetti = false): void {
   const keys = Object.keys(drinks);
   if (keys.length === 0) {
     return;
   }
   const id = keys[Math.floor(Math.random() * keys.length)];
   animateDrinkChange(id);
-  if (triggerConfetti) {
-    const canvas = document.getElementById(
-      "foregroundEffectCanvas",
-    ) as HTMLCanvasElement;
-    if (canvas) {
-      createConfetti(canvas.width, 28);
-    }
+  if (enableConfetti) {
+    triggerConfetti();
   }
 }
 
@@ -359,28 +353,8 @@ window.addEventListener("message", (event) => {
   handlePanelMessage(event.data as PanelMessage);
 });
 
-function initForegroundCanvas(): void {
-  const canvas = initCanvas("foregroundEffectCanvas", false);
-  if (!canvas) {
-    return;
-  }
-  const width = canvas.width;
-  const height = canvas.height;
-  createStars(width, height);
-  if (_starAnimation) {
-    window.cancelAnimationFrame(_starAnimation);
-  }
-  animateStars();
-}
-
 export function cocktailPanelApp() {
-  initCanvas("backgroundEffectCanvas", true);
-  initForegroundCanvas();
-
-  window.addEventListener("resize", () => {
-    initCanvas("backgroundEffectCanvas", true);
-    initForegroundCanvas();
-  });
+  notifyExtensionReady();
 }
 
 const vscode = (window as any).acquireVsCodeApi();
@@ -411,14 +385,9 @@ function notifyExtensionReady(): void {
 }
 
 function setupPanel(): void {
-  initCanvas("backgroundEffectCanvas", true);
-  initForegroundCanvas();
   notifyExtensionReady();
+  initializeBartender();
   window.addEventListener("keydown", handleKeyDown);
-  window.addEventListener("resize", () => {
-    initCanvas("backgroundEffectCanvas", true);
-    initForegroundCanvas();
-  });
 }
 
 if (document.readyState === "loading") {

@@ -52,6 +52,21 @@ export class CocktailViewProvider implements vscode.WebviewViewProvider {
     }
   }
 
+  public showFlavorMessage() {
+    if (this._currentDrinkDescription) {
+      const prefix = this._currentDrinkName
+        ? `${this._currentDrinkName}: `
+        : "";
+      vscode.window.showInformationMessage(
+        `${prefix}${this._currentDrinkDescription}`,
+      );
+    } else {
+      vscode.window.showInformationMessage(
+        "No cocktail selected yet. Open the Cocktail view and choose a drink first.",
+      );
+    }
+  }
+
   public showMethodMessage() {
     if (this._currentDrinkMethod) {
       const prefix = this._currentDrinkName
@@ -163,6 +178,30 @@ export class CocktailViewProvider implements vscode.WebviewViewProvider {
     const drinkUri = webview.asWebviewUri(
       vscode.Uri.joinPath(this._extensionUri, "media", "drinks", "1.png"),
     );
+    const backgroundUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(this._extensionUri, "media", "images", "bg.png"),
+    );
+    const foregroundUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(this._extensionUri, "media", "images", "fg2.png"),
+    );
+    const bartenderWalkUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(
+        this._extensionUri,
+        "media",
+        "images",
+        "bartender",
+        "walk.gif",
+      ),
+    );
+    const bartenderWaitUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(
+        this._extensionUri,
+        "media",
+        "images",
+        "bartender",
+        "wait.gif",
+      ),
+    );
     const htmlLang = vscode.env.language || "en";
 
     return `<!doctype html>
@@ -175,8 +214,15 @@ export class CocktailViewProvider implements vscode.WebviewViewProvider {
       <body>
         <div id="cocktailScene">
           <div id="cocktailCanvasContainer">
-            <canvas id="backgroundEffectCanvas"></canvas>
-            <canvas id="foregroundEffectCanvas"></canvas>
+            <div id="backgroundImage" style="background-image: url('${backgroundUri}');"></div>
+            <img
+              id="bartender"
+              src="${bartenderWaitUri}"
+              data-walk="${bartenderWalkUri}"
+              data-wait="${bartenderWaitUri}"
+              alt="Bartender"
+            />
+            <div id="foregroundImage" style="background-image: url('${foregroundUri}');"></div>
           </div>
           <div class="scene-content">
             <div class="drink-panel">
@@ -191,6 +237,11 @@ export class CocktailViewProvider implements vscode.WebviewViewProvider {
           </div>
           <div class="key-progress">
             <div class="key-progress-fill" id="keyProgressFill"></div>
+          </div>
+          <div class="flavor-bar">
+            <div class="flavor-marquee">
+              <span id="flavorText">Flavor text will appear here.</span>
+            </div>
           </div>
         </div>
         <script src="${scriptUri}"></script>
@@ -251,17 +302,10 @@ export function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
     vscode.commands.registerCommand("vscode-cocktail.showFlavorMessage", () => {
-      if (clockProvider._currentDrinkDescription) {
-        const prefix = clockProvider._currentDrinkName
-          ? `${clockProvider._currentDrinkName}: `
-          : "";
-        vscode.window.showInformationMessage(
-          `${prefix}${clockProvider._currentDrinkDescription}`,
-        );
-      } else {
-        vscode.window.showInformationMessage(
-          "No cocktail selected yet. Open the Cocktail view and choose a drink first.",
-        );
+      try {
+        clockProvider.showFlavorMessage();
+      } catch (err) {
+        vscode.window.showErrorMessage(String(err));
       }
     }),
   );
