@@ -158,7 +158,13 @@ function initializeBartender(): void {
       direction === 1 ? Math.max(0, containerWidth - imgWidth - 24) : 0;
 
     img.src = walkSrc;
-    img.style.transform = `translate3d(${targetX}px, 0, 0)`;
+    const startX = direction === 1 ? 0 : containerWidth - imgWidth - 24;
+    img.style.transition = "none";
+    img.style.transform = `translate3d(${startX}px, 0, 0) scaleX(${direction})`;
+    // Force styles to apply immediately before starting movement
+    img.getBoundingClientRect();
+    img.style.transition = "transform 1.2s linear";
+    img.style.transform = `translate3d(${targetX}px, 0, 0) scaleX(${direction})`;
 
     const onTransitionEnd = () => {
       img.removeEventListener("transitionend", onTransitionEnd);
