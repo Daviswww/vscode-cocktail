@@ -146,40 +146,86 @@ function initializeBartender(): void {
   }
 
   let direction = 1;
-  const waitTime = 1200;
-  const startMovement = () => {
+  let currentX = 0;
+  const modeIntervalMs = 1500;
+
+  const getRandomBetween = (min: number, max: number) =>
+    Math.floor(Math.random() * (max - min + 1)) + min;
+
+  const clamp = (value: number, min: number, max: number) =>
+    Math.min(max, Math.max(min, value));
+
+  const getBounds = () => {
+    const containerWidth = container.clientWidth;
+    const imgWidth = img.clientWidth || 120;
+    const minX = 0;
+    const maxX = Math.max(0, containerWidth - imgWidth - 24);
+    return { minX, maxX };
+  };
+
+  const setPosition = (x: number, duration = 1200) => {
+    const { minX, maxX } = getBounds();
+    currentX = clamp(x, minX, maxX);
+    img.style.transition = `transform ${duration}ms linear`;
+    img.style.transform = `translate3d(${currentX}px, 0, 0) scaleX(${direction})`;
+  };
+
+  let modeTimer: number | undefined;
+  const clearModeTimer = () => {
+    if (modeTimer !== undefined) {
+      window.clearTimeout(modeTimer);
+      modeTimer = undefined;
+    }
+  };
+
+  const scheduleNextMode = () => {
+    clearModeTimer();
+    modeTimer = window.setTimeout(runMode, modeIntervalMs);
+  };
+
+  const runMode = () => {
     if (!img || !container) {
       return;
     }
 
-    const containerWidth = container.clientWidth;
-    const imgWidth = img.clientWidth || 120;
-    const targetX =
-      direction === 1 ? Math.max(0, containerWidth - imgWidth - 24) : 0;
+    const { minX, maxX } = getBounds();
+    const mode = Math.random() < 0.45 ? "wait" : "walk";
+
+    if (mode === "wait") {
+      img.src = waitSrc;
+      scheduleNextMode();
+      return;
+    }
 
     img.src = walkSrc;
-    const startX = direction === 1 ? 0 : containerWidth - imgWidth - 24;
-    img.style.transition = "none";
-    img.style.transform = `translate3d(${startX}px, 0, 0) scaleX(${direction})`;
-    // Force styles to apply immediately before starting movement
-    img.getBoundingClientRect();
-    img.style.transition = "transform 1.2s linear";
-    img.style.transform = `translate3d(${targetX}px, 0, 0) scaleX(${direction})`;
+    const step = getRandomBetween(80, 180);
+    let target = currentX + direction * step;
 
-    const onTransitionEnd = () => {
-      img.removeEventListener("transitionend", onTransitionEnd);
-      img.src = waitSrc;
+    if (target < minX || target > maxX) {
       direction *= -1;
-      window.setTimeout(startMovement, waitTime);
-    };
+      img.style.transition = "none";
+      img.style.transform = `translate3d(${currentX}px, 0, 0) scaleX(${direction})`;
+      img.getBoundingClientRect();
+      target = clamp(currentX + direction * step, minX, maxX);
+    }
 
-    img.addEventListener("transitionend", onTransitionEnd, { once: true });
+    setPosition(target);
+    scheduleNextMode();
+  };
+
+  const startBartender = () => {
+    const { minX } = getBounds();
+    currentX = minX;
+    img.style.transition = "none";
+    img.style.transform = `translate3d(${currentX}px, 0, 0) scaleX(${direction})`;
+    img.src = waitSrc;
+    scheduleNextMode();
   };
 
   if (img.complete && img.naturalWidth > 0) {
-    startMovement();
+    startBartender();
   } else {
-    img.addEventListener("load", startMovement, { once: true });
+    img.addEventListener("load", startBartender, { once: true });
   }
 }
 
