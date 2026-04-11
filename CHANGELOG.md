@@ -2,6 +2,10 @@
 
 All notable changes to the "vscode-cocktail" extension will be documented in this file.
 
+## [1.1.1]
+
+- Added flavor text display in the cocktail view
+
 ## [1.1.0]
 
 - Added fixed background and foreground imagery with x-axis repeat support
