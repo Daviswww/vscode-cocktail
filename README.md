@@ -67,3 +67,9 @@ npm test
 ## Contributing
 
 - Contributions are welcome. Feel free to submit a PR, report bugs, or suggest new cocktails.
+
+## License
+
+The MIT License above applies ONLY to the software code in this repository.
+All image files, graphics, and visual assets are Copyright (c) the original creator(s). 
+All rights reserved. No reproduction or usage of these assets is permitted without prior written consent.
